@@ -7,7 +7,7 @@ object frmMain: TfrmMain
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -15
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
@@ -16,7 +16,7 @@ object frmMain: TfrmMain
     718
     444)
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 18
   object btnExit: TsButton
     Left = 635
     Top = 411
@@ -25,6 +25,27 @@ object frmMain: TfrmMain
     Anchors = [akRight, akBottom]
     Caption = 'E&xit'
     TabOrder = 0
+  end
+  object sPanel1: TsPanel
+    AlignWithMargins = True
+    Left = 10
+    Top = 10
+    Width = 698
+    Height = 55
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alTop
+    Caption = 
+      'DOD Mapper allows you to FTP your map files onto your DOD server' +
+      '. By default, it will NOT overwrite any files that already exist' +
+      ' in the target FTP folder.'
+    Padding.Left = 5
+    Padding.Top = 5
+    Padding.Right = 5
+    Padding.Bottom = 5
+    TabOrder = 1
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
