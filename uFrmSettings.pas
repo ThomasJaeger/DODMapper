@@ -49,6 +49,12 @@ procedure TfrmSettings.btnTestConnectionClick(Sender: TObject);
 Var
   I: Integer;
 begin
+  if (txtHost.Text='') or (txtUsername.Text='') or (txtPassword.Text='') then
+  begin
+    ShowMessage('Enter valid FTP server information, first');
+    exit;
+  end;
+
   Screen.Cursor := crHourGlass;
   with dm do
   begin

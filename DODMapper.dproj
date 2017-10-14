@@ -39,6 +39,12 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
@@ -55,7 +61,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_UsePackage>lmdrtthemes;lmdrtdialog;bindcompfmx;lmdrtscript;vcldbx;fmx;rtl;dbrtl;IndySystem;TeeDB;SynEditDR;bindcomp;acntDelphiXE4_R;inetdbbde;vclib;DBXInterBaseDriver;Tee;DataSnapCommon;FrameViewerXE4;xmlrtl;svnui;ibxpress;DbxCommonDriver;lmdrtinspector;vclimg;lmdrtdesign;IndyProtocols;dbxcds;KControls_RXE4;MetropolisUILiveTile;bindcompdbx;FMXTee;TeeUI;vclactnband;bindengine;vcldb;bindcompvcl;soaprtl;vcldsnap;lmdrtprint;vclie;vcltouch;CustomIPTransport;VclSmp;dsnap;IndyIPServer;IndyCore;vcl;IndyIPCommon;lmdrtplugin;FmxTeeUI;inet;lmdrtsyntax;vclx;lmdrtide;inetdbxpress;webdsnap;svn;lmdrtrtlx;lmdrtdocking;bdertl;VirtualTreesR;lmdrtl;dbexpress;adortl;lmdrtscriptimp;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=DOD Mapper;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -77,6 +83,11 @@
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>false</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=DOD Mapper;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -156,6 +167,16 @@
                 <Source>
                     <Source Name="MainSource">DODMapper.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\zDesign18.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\zDesign18.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\SynEdit_DXE4.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\SynEdit_DXE4.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCComponents.Delphi.XE4.Designtime.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCComponents.Delphi.XE4.Designtime.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCControls.Delphi.XE4.Designtime.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCControls.Delphi.XE4.Designtime.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCEditor.Delphi.XE4.Designtime.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\BCEditor.Delphi.XE4.Designtime.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\11.0\Bpl\PngComponentsDesign180.bpl">File C:\Users\Public\Documents\RAD Studio\11.0\Bpl\PngComponentsDesign180.bpl not found</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
