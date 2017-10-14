@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'DOD Mapper'
-  ClientHeight = 610
-  ClientWidth = 978
+  ClientHeight = 666
+  ClientWidth = 997
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,13 +14,32 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   Position = poScreenCenter
   DesignSize = (
-    978
-    610)
+    997
+    666)
   PixelsPerInch = 96
   TextHeight = 18
+  object sLabel1: TsLabel
+    AlignWithMargins = True
+    Left = 10
+    Top = 10
+    Width = 977
+    Height = 18
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alTop
+    Alignment = taCenter
+    Caption = 
+      'DOD Mapper allows you to FTP your map files onto your DOD server' +
+      '. It will NOT overwrite any files that already exist in the targ' +
+      'et FTP folder.'
+    ExplicitLeft = 42
+    ExplicitTop = 66
+  end
   object btnExit: TsButton
-    Left = 895
-    Top = 577
+    Left = 914
+    Top = 633
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -30,89 +49,6 @@ object frmMain: TfrmMain
     OnClick = btnExitClick
     ExplicitLeft = 635
     ExplicitTop = 411
-  end
-  object sPanel1: TsPanel
-    AlignWithMargins = True
-    Left = 10
-    Top = 10
-    Width = 958
-    Height = 55
-    Margins.Left = 10
-    Margins.Top = 10
-    Margins.Right = 10
-    Margins.Bottom = 10
-    Align = alTop
-    Caption = 
-      'DOD Mapper allows you to FTP your map files onto your DOD server' +
-      '. By default, it will NOT overwrite any files that already exist' +
-      ' in the target FTP folder.'
-    Padding.Left = 5
-    Padding.Top = 5
-    Padding.Right = 5
-    Padding.Bottom = 5
-    TabOrder = 1
-    ExplicitLeft = 26
-    ExplicitTop = 15
-    ExplicitWidth = 698
-  end
-  object sGroupBox1: TsGroupBox
-    AlignWithMargins = True
-    Left = 10
-    Top = 80
-    Width = 958
-    Height = 81
-    Margins.Left = 10
-    Margins.Top = 5
-    Margins.Right = 10
-    Margins.Bottom = 10
-    Align = alTop
-    Caption = 'DOD Server FTP Login Information'
-    TabOrder = 2
-    ExplicitWidth = 827
-    object sLabel1: TsLabel
-      Left = 19
-      Top = 35
-      Width = 35
-      Height = 18
-      Caption = '&Host:'
-      FocusControl = txtHost
-    end
-    object sLabel2: TsLabel
-      Left = 403
-      Top = 35
-      Width = 72
-      Height = 18
-      Caption = '&Username:'
-      FocusControl = txtPassword
-    end
-    object txtHost: TsEdit
-      Left = 60
-      Top = 32
-      Width = 317
-      Height = 26
-      Color = 3553081
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
-      Font.Height = -15
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-    end
-    object txtPassword: TsEdit
-      Left = 481
-      Top = 32
-      Width = 128
-      Height = 26
-      Color = 3553081
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
-      Font.Height = -15
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-    end
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -2716,7 +2652,7 @@ object frmMain: TfrmMain
         OriginName = 'Steam2.asz'
       end>
     SkinDirectory = 'D:\Source\acnt_reg_12_17\Skins'
-    SkinName = 'Steam2 (internal)'
+    SkinName = 'Steam (internal)'
     SkinInfo = '10'
     ThirdParty.ThirdEdits = ' '
     ThirdParty.ThirdButtons = 'TButton'
@@ -2741,32 +2677,43 @@ object frmMain: TfrmMain
     ThirdParty.ThirdScrollBar = ' '
     ThirdParty.ThirdStaticText = ' '
     ThirdParty.ThirdNativePaint = ' '
-    Left = 544
-    Top = 432
+    Left = 696
+    Top = 584
   end
   object sSkinProvider1: TsSkinProvider
+    ScreenSnap = True
     SkinData.SkinSection = 'FORM'
     TitleButtons = <>
-    Left = 648
-    Top = 432
+    Left = 816
+    Top = 584
   end
   object MainMenu1: TMainMenu
-    Left = 393
-    Top = 400
+    Left = 481
+    Top = 584
     object mnuFile: TMenuItem
       Caption = '&File'
+      object Settings1: TMenuItem
+        Action = actSettings
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
       object mnuExit: TMenuItem
         Action = actExit
       end
     end
   end
   object ActionManager1: TActionManager
-    Left = 392
-    Top = 456
+    Left = 584
+    Top = 584
     StyleName = 'Platform Default'
     object actExit: TAction
       Caption = 'E&xit'
       OnExecute = actExitExecute
+    end
+    object actSettings: TAction
+      Caption = '&Settings'
+      OnExecute = actSettingsExecute
     end
   end
 end

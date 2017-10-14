@@ -12,19 +12,18 @@ type
     sSkinManager1: TsSkinManager;
     sSkinProvider1: TsSkinProvider;
     btnExit: TsButton;
-    sPanel1: TsPanel;
     MainMenu1: TMainMenu;
     mnuFile: TMenuItem;
     mnuExit: TMenuItem;
     ActionManager1: TActionManager;
     actExit: TAction;
-    sGroupBox1: TsGroupBox;
-    txtHost: TsEdit;
+    actSettings: TAction;
+    Settings1: TMenuItem;
+    N1: TMenuItem;
     sLabel1: TsLabel;
-    sLabel2: TsLabel;
-    txtPassword: TsEdit;
     procedure btnExitClick(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
+    procedure actSettingsExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,9 +37,16 @@ implementation
 
 {$R *.dfm}
 
+uses uFrmSettings;
+
 procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
   close;
+end;
+
+procedure TfrmMain.actSettingsExecute(Sender: TObject);
+begin
+  frmSettings.ShowModal;
 end;
 
 procedure TfrmMain.btnExitClick(Sender: TObject);
