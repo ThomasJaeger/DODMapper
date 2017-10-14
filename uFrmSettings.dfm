@@ -2,8 +2,8 @@ object frmSettings: TfrmSettings
   Left = 0
   Top = 0
   Caption = 'Settings'
-  ClientHeight = 247
-  ClientWidth = 546
+  ClientHeight = 667
+  ClientWidth = 723
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,23 +12,25 @@ object frmSettings: TfrmSettings
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  DesignSize = (
-    546
-    247)
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 18
   object sGroupBox1: TsGroupBox
     AlignWithMargins = True
-    Left = 15
-    Top = 10
-    Width = 514
-    Height = 172
+    Left = 10
+    Top = 5
+    Width = 703
+    Height = 207
     Margins.Left = 10
     Margins.Top = 5
     Margins.Right = 10
     Margins.Bottom = 10
+    Align = alTop
     Caption = 'DOD Server FTP Login Information'
     TabOrder = 0
+    ExplicitLeft = 15
+    ExplicitTop = 10
+    ExplicitWidth = 514
     object sLabel1: TsLabel
       Left = 48
       Top = 35
@@ -71,11 +73,11 @@ object frmSettings: TfrmSettings
     object txtHost: TsEdit
       Left = 89
       Top = 32
-      Width = 408
+      Width = 584
       Height = 26
-      Color = 3553081
+      Color = 4804169
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
+      Font.Color = 13816530
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -85,11 +87,11 @@ object frmSettings: TfrmSettings
     object txtUsername: TsEdit
       Left = 89
       Top = 64
-      Width = 192
+      Width = 272
       Height = 26
-      Color = 3553081
+      Color = 4804169
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
+      Font.Color = 13816530
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -99,11 +101,11 @@ object frmSettings: TfrmSettings
     object txtPassword: TsEdit
       Left = 89
       Top = 96
-      Width = 192
+      Width = 272
       Height = 26
-      Color = 3553081
+      Color = 4804169
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
+      Font.Color = 13816530
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -115,9 +117,9 @@ object frmSettings: TfrmSettings
       Top = 128
       Width = 96
       Height = 26
-      Color = 3553081
+      Color = 4804169
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11777720
+      Font.Color = 13816530
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -128,30 +130,96 @@ object frmSettings: TfrmSettings
       MinValue = 1
       Value = 21
     end
+    object btnTestConnection: TsButton
+      Left = 89
+      Top = 168
+      Width = 192
+      Height = 25
+      Caption = 'Test Connection'
+      TabOrder = 4
+      OnClick = btnTestConnectionClick
+    end
   end
-  object btnApply: TsButton
-    Left = 463
-    Top = 214
-    Width = 75
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Caption = 'Apply'
-    ModalResult = 1
+  object sGroupBox2: TsGroupBox
+    AlignWithMargins = True
+    Left = 10
+    Top = 232
+    Width = 703
+    Height = 375
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alClient
+    Caption = 'Server Content'
     TabOrder = 1
-    ExplicitLeft = 702
-    ExplicitTop = 428
+    ExplicitLeft = 186
+    ExplicitTop = 280
+    ExplicitWidth = 185
+    ExplicitHeight = 105
+    object lstFiles: TVirtualStringTree
+      Left = 2
+      Top = 20
+      Width = 699
+      Height = 353
+      Align = alClient
+      EmptyListMessage = '< Not connected >'
+      Header.AutoSizeIndex = 0
+      Header.Height = 22
+      Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
+      Header.ParentFont = True
+      ScrollBarOptions.AlwaysVisible = True
+      TabOrder = 0
+      TreeOptions.SelectionOptions = [toFullRowSelect]
+      OnGetText = lstFilesGetText
+      ExplicitHeight = 392
+      Columns = <
+        item
+          Position = 0
+          Width = 528
+          WideText = 'Name'
+        end
+        item
+          Alignment = taRightJustify
+          Position = 1
+          Width = 150
+          WideText = 'Size (in KBytes)'
+        end>
+      WideDefaultText = ''
+    end
   end
-  object btnCancel: TsButton
-    Left = 375
-    Top = 214
-    Width = 75
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Caption = 'Cancel'
-    ModalResult = 2
+  object sPanel1: TsPanel
+    Left = 0
+    Top = 617
+    Width = 723
+    Height = 50
+    Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 614
-    ExplicitTop = 428
+    ExplicitTop = 656
+    DesignSize = (
+      723
+      50)
+    object btnCancel: TsButton
+      Left = 551
+      Top = 10
+      Width = 75
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Cancel = True
+      Caption = 'Cancel'
+      ModalResult = 2
+      TabOrder = 0
+    end
+    object btnApply: TsButton
+      Left = 632
+      Top = 10
+      Width = 75
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Caption = 'Apply'
+      ModalResult = 1
+      TabOrder = 1
+    end
   end
 end

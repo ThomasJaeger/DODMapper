@@ -42,11 +42,10 @@ object frmMain: TfrmMain
     Top = 633
     Width = 75
     Height = 25
+    Action = dm.actExit
     Anchors = [akRight, akBottom]
     Cancel = True
-    Caption = 'E&xit'
     TabOrder = 0
-    OnClick = btnExitClick
     ExplicitLeft = 635
     ExplicitTop = 411
   end
@@ -2654,29 +2653,32 @@ object frmMain: TfrmMain
     SkinDirectory = 'D:\Source\acnt_reg_12_17\Skins'
     SkinName = 'Steam (internal)'
     SkinInfo = '10'
-    ThirdParty.ThirdEdits = ' '
-    ThirdParty.ThirdButtons = 'TButton'
-    ThirdParty.ThirdBitBtns = ' '
-    ThirdParty.ThirdCheckBoxes = ' '
-    ThirdParty.ThirdGroupBoxes = ' '
-    ThirdParty.ThirdListViews = ' '
-    ThirdParty.ThirdPanels = ' '
-    ThirdParty.ThirdGrids = ' '
-    ThirdParty.ThirdTreeViews = ' '
-    ThirdParty.ThirdComboBoxes = ' '
-    ThirdParty.ThirdWWEdits = ' '
-    ThirdParty.ThirdVirtualTrees = ' '
-    ThirdParty.ThirdGridEh = ' '
-    ThirdParty.ThirdPageControl = ' '
-    ThirdParty.ThirdTabControl = ' '
-    ThirdParty.ThirdToolBar = ' '
-    ThirdParty.ThirdStatusBar = ' '
-    ThirdParty.ThirdSpeedButton = ' '
-    ThirdParty.ThirdScrollControl = ' '
-    ThirdParty.ThirdUpDown = ' '
-    ThirdParty.ThirdScrollBar = ' '
-    ThirdParty.ThirdStaticText = ' '
-    ThirdParty.ThirdNativePaint = ' '
+    ThirdParty.ThirdEdits = ' '#13#10
+    ThirdParty.ThirdButtons = 'TButton'#13#10
+    ThirdParty.ThirdBitBtns = ' '#13#10
+    ThirdParty.ThirdCheckBoxes = ' '#13#10
+    ThirdParty.ThirdGroupBoxes = ' '#13#10
+    ThirdParty.ThirdListViews = ' '#13#10
+    ThirdParty.ThirdPanels = ' '#13#10
+    ThirdParty.ThirdGrids = ' '#13#10
+    ThirdParty.ThirdTreeViews = ' '#13#10
+    ThirdParty.ThirdComboBoxes = ' '#13#10
+    ThirdParty.ThirdWWEdits = ' '#13#10
+    ThirdParty.ThirdVirtualTrees = 
+      'TVirtualStringTree'#13#10'TVirtualStringTreeDB'#13#10'TEasyListview'#13#10'TVirtua' +
+      'lExplorerListview'#13#10'TVirtualExplorerTreeview'#13#10'TVirtualExplorerTre' +
+      'e'#13#10'TVirtualExplorerEasyListview'#13#10'TVirtualDrawTree'#13#10
+    ThirdParty.ThirdGridEh = ' '#13#10
+    ThirdParty.ThirdPageControl = ' '#13#10
+    ThirdParty.ThirdTabControl = ' '#13#10
+    ThirdParty.ThirdToolBar = ' '#13#10
+    ThirdParty.ThirdStatusBar = ' '#13#10
+    ThirdParty.ThirdSpeedButton = ' '#13#10
+    ThirdParty.ThirdScrollControl = ' '#13#10
+    ThirdParty.ThirdUpDown = ' '#13#10
+    ThirdParty.ThirdScrollBar = ' '#13#10
+    ThirdParty.ThirdStaticText = ' '#13#10
+    ThirdParty.ThirdNativePaint = ' '#13#10
     Left = 696
     Top = 584
   end
@@ -2688,32 +2690,19 @@ object frmMain: TfrmMain
     Top = 584
   end
   object MainMenu1: TMainMenu
-    Left = 481
+    Left = 601
     Top = 584
     object mnuFile: TMenuItem
       Caption = '&File'
       object Settings1: TMenuItem
-        Action = actSettings
+        Action = dm.actSettings
       end
       object N1: TMenuItem
         Caption = '-'
       end
       object mnuExit: TMenuItem
-        Action = actExit
+        Action = dm.actExit
       end
-    end
-  end
-  object ActionManager1: TActionManager
-    Left = 584
-    Top = 584
-    StyleName = 'Platform Default'
-    object actExit: TAction
-      Caption = 'E&xit'
-      OnExecute = actExitExecute
-    end
-    object actSettings: TAction
-      Caption = '&Settings'
-      OnExecute = actSettingsExecute
     end
   end
 end
