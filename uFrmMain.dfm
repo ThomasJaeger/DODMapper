@@ -2,35 +2,40 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'DOD Mapper'
-  ClientHeight = 444
-  ClientWidth = 718
+  ClientHeight = 610
+  ClientWidth = 978
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -15
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
   DesignSize = (
-    718
-    444)
+    978
+    610)
   PixelsPerInch = 96
   TextHeight = 18
   object btnExit: TsButton
-    Left = 635
-    Top = 411
+    Left = 895
+    Top = 577
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
+    Cancel = True
     Caption = 'E&xit'
     TabOrder = 0
+    OnClick = btnExitClick
+    ExplicitLeft = 635
+    ExplicitTop = 411
   end
   object sPanel1: TsPanel
     AlignWithMargins = True
     Left = 10
     Top = 10
-    Width = 698
+    Width = 958
     Height = 55
     Margins.Left = 10
     Margins.Top = 10
@@ -46,6 +51,68 @@ object frmMain: TfrmMain
     Padding.Right = 5
     Padding.Bottom = 5
     TabOrder = 1
+    ExplicitLeft = 26
+    ExplicitTop = 15
+    ExplicitWidth = 698
+  end
+  object sGroupBox1: TsGroupBox
+    AlignWithMargins = True
+    Left = 10
+    Top = 80
+    Width = 958
+    Height = 81
+    Margins.Left = 10
+    Margins.Top = 5
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alTop
+    Caption = 'DOD Server FTP Login Information'
+    TabOrder = 2
+    ExplicitWidth = 827
+    object sLabel1: TsLabel
+      Left = 19
+      Top = 35
+      Width = 35
+      Height = 18
+      Caption = '&Host:'
+      FocusControl = txtHost
+    end
+    object sLabel2: TsLabel
+      Left = 403
+      Top = 35
+      Width = 72
+      Height = 18
+      Caption = '&Username:'
+      FocusControl = txtPassword
+    end
+    object txtHost: TsEdit
+      Left = 60
+      Top = 32
+      Width = 317
+      Height = 26
+      Color = 3553081
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 11777720
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+    end
+    object txtPassword: TsEdit
+      Left = 481
+      Top = 32
+      Width = 128
+      Height = 26
+      Color = 3553081
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 11777720
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+    end
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -2674,13 +2741,32 @@ object frmMain: TfrmMain
     ThirdParty.ThirdScrollBar = ' '
     ThirdParty.ThirdStaticText = ' '
     ThirdParty.ThirdNativePaint = ' '
-    Left = 352
-    Top = 224
+    Left = 544
+    Top = 432
   end
   object sSkinProvider1: TsSkinProvider
     SkinData.SkinSection = 'FORM'
     TitleButtons = <>
-    Left = 456
-    Top = 224
+    Left = 648
+    Top = 432
+  end
+  object MainMenu1: TMainMenu
+    Left = 393
+    Top = 400
+    object mnuFile: TMenuItem
+      Caption = '&File'
+      object mnuExit: TMenuItem
+        Action = actExit
+      end
+    end
+  end
+  object ActionManager1: TActionManager
+    Left = 392
+    Top = 456
+    StyleName = 'Platform Default'
+    object actExit: TAction
+      Caption = 'E&xit'
+      OnExecute = actExitExecute
+    end
   end
 end
