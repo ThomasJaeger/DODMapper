@@ -34,8 +34,7 @@ object frmMain: TfrmMain
       'DOD Mapper allows you to FTP your map files onto your DOD server' +
       '. It will NOT overwrite any files that already exist in the targ' +
       'et FTP folder.'
-    ExplicitLeft = 42
-    ExplicitTop = 66
+    ExplicitWidth = 932
   end
   object btnExit: TsButton
     Left = 914
@@ -46,8 +45,6 @@ object frmMain: TfrmMain
     Anchors = [akRight, akBottom]
     Cancel = True
     TabOrder = 0
-    ExplicitLeft = 635
-    ExplicitTop = 411
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
@@ -2703,6 +2700,12 @@ object frmMain: TfrmMain
       end
       object mnuExit: TMenuItem
         Action = dm.actExit
+      end
+    end
+    object H1: TMenuItem
+      Caption = 'Help'
+      object A1: TMenuItem
+        Action = dm.actAbout
       end
     end
   end

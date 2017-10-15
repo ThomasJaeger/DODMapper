@@ -19,6 +19,8 @@ type
     Settings1: TMenuItem;
     N1: TMenuItem;
     sLabel1: TsLabel;
+    H1: TMenuItem;
+    A1: TMenuItem;
   private
     { Private declarations }
   public

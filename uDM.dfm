@@ -24,6 +24,10 @@ object dm: Tdm
       Caption = '&Settings'
       OnExecute = actSettingsExecute
     end
+    object actAbout: TAction
+      Caption = '&About'
+      OnExecute = actAboutExecute
+    end
   end
   object TreeImages: TImageList
     Left = 278

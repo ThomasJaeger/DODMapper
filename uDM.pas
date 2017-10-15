@@ -14,8 +14,10 @@ type
     actExit: TAction;
     actSettings: TAction;
     TreeImages: TImageList;
+    actAbout: TAction;
     procedure actExitExecute(Sender: TObject);
     procedure actSettingsExecute(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -40,7 +42,12 @@ implementation
 {$R *.dfm}
 
 uses
-  uFrmSettings, uFrmMain;
+  uFrmSettings, uFrmMain, uFrmAbout;
+
+procedure Tdm.actAboutExecute(Sender: TObject);
+begin
+  frmAbout.ShowModal;
+end;
 
 procedure Tdm.actExitExecute(Sender: TObject);
 begin
