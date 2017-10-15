@@ -15,23 +15,179 @@ object frmMain: TfrmMain
   Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 18
-  object sLabel1: TsLabel
-    AlignWithMargins = True
-    Left = 10
-    Top = 10
-    Width = 977
-    Height = 18
-    Margins.Left = 10
-    Margins.Top = 10
-    Margins.Right = 10
-    Margins.Bottom = 10
+  object sSplitter1: TsSplitter
+    Left = 475
+    Top = 89
+    Width = 10
+    Height = 577
+    ExplicitLeft = 377
+  end
+  object sPanel1: TsPanel
+    Left = 0
+    Top = 0
+    Width = 997
+    Height = 41
     Align = alTop
-    Alignment = taCenter
     Caption = 
       'DOD Mapper allows you to FTP your map files onto your DOD server' +
       '. It will NOT overwrite any files that already exist in the targ' +
       'et FTP folder.'
-    ExplicitWidth = 932
+    TabOrder = 0
+  end
+  object sGroupBox1: TsGroupBox
+    AlignWithMargins = True
+    Left = 5
+    Top = 94
+    Width = 465
+    Height = 567
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alLeft
+    Caption = 'MAP Files to upload (should be ZIP files)'
+    TabOrder = 1
+    ExplicitLeft = 0
+    ExplicitTop = 89
+    ExplicitHeight = 577
+    object lstMAPFiles: TVirtualStringTree
+      AlignWithMargins = True
+      Left = 12
+      Top = 25
+      Width = 441
+      Height = 530
+      Margins.Left = 10
+      Margins.Top = 5
+      Margins.Right = 10
+      Margins.Bottom = 10
+      Align = alClient
+      EmptyListMessage = '< Not connected >'
+      Header.AutoSizeIndex = 0
+      Header.Height = 22
+      Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
+      Header.ParentFont = True
+      Images = dm.TreeImages
+      ScrollBarOptions.AlwaysVisible = True
+      TabOrder = 0
+      TreeOptions.SelectionOptions = [toFullRowSelect]
+      Columns = <
+        item
+          Position = 0
+          Width = 140
+          WideText = 'Name'
+        end
+        item
+          Alignment = taRightJustify
+          Position = 1
+          Width = 120
+          WideText = 'Size in Bytes'
+        end
+        item
+          Position = 2
+          Width = 160
+          WideText = 'Date / Time'
+        end>
+      WideDefaultText = ''
+    end
+  end
+  object sGroupBox2: TsGroupBox
+    AlignWithMargins = True
+    Left = 490
+    Top = 94
+    Width = 502
+    Height = 567
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alClient
+    Caption = 'FTP Server Content'
+    TabOrder = 2
+    ExplicitLeft = 680
+    ExplicitTop = 272
+    ExplicitWidth = 185
+    ExplicitHeight = 105
+    object lstServer: TVirtualStringTree
+      AlignWithMargins = True
+      Left = 12
+      Top = 25
+      Width = 478
+      Height = 530
+      Margins.Left = 10
+      Margins.Top = 5
+      Margins.Right = 10
+      Margins.Bottom = 10
+      Align = alClient
+      EmptyListMessage = '< Not connected >'
+      Header.AutoSizeIndex = 0
+      Header.Height = 22
+      Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
+      Header.ParentFont = True
+      Images = dm.TreeImages
+      ScrollBarOptions.AlwaysVisible = True
+      TabOrder = 0
+      TreeOptions.SelectionOptions = [toFullRowSelect]
+      Columns = <
+        item
+          Position = 0
+          Width = 177
+          WideText = 'Name'
+        end
+        item
+          Alignment = taRightJustify
+          Position = 1
+          Width = 120
+          WideText = 'Size in Bytes'
+        end
+        item
+          Position = 2
+          Width = 160
+          WideText = 'Date / Time'
+        end>
+      WideDefaultText = ''
+    end
+  end
+  object sPanel2: TsPanel
+    Left = 0
+    Top = 41
+    Width = 997
+    Height = 48
+    Align = alTop
+    TabOrder = 3
+    object btnConnect: TsButton
+      Left = 242
+      Top = 6
+      Width = 177
+      Height = 30
+      Caption = '2. Connect to server'
+      TabOrder = 0
+    end
+    object btnUpload: TsButton
+      Left = 461
+      Top = 6
+      Width = 177
+      Height = 30
+      Caption = '3. Upload map files'
+      Enabled = False
+      TabOrder = 1
+    end
+    object btnDisconnect: TsButton
+      Left = 680
+      Top = 6
+      Width = 177
+      Height = 30
+      Caption = '4. Disconnect'
+      Enabled = False
+      TabOrder = 2
+    end
+    object btnAddMapFiles: TsButton
+      Left = 24
+      Top = 6
+      Width = 177
+      Height = 30
+      Caption = '1. Add map files'
+      TabOrder = 3
+    end
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True

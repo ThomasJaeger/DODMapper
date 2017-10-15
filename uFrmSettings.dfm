@@ -157,6 +157,7 @@ object frmSettings: TfrmSettings
       Top = 160
       Width = 458
       Height = 26
+      Anchors = [akLeft, akTop, akRight]
       Color = 4804169
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 13816530
