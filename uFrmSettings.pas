@@ -33,6 +33,7 @@ type
   private
     FFiles: TStringList;
     procedure Synchronize;
+    function FormatByteSize(const bytes: Longint): string;
   public
     { Public declarations }
   end;
@@ -135,7 +136,7 @@ begin
     1:
       begin
         if Data.Size > 0 then
-          CellText := inttostr(Data.Size)
+          CellText := FormatByteSize(Data.Size)
         else
           CellText := '';
       end;
@@ -169,7 +170,7 @@ begin
     end else
     begin
       // File
-      data^.Size := round(s / 1024);
+      data^.Size := s;
       data^.Dir := false;
     end;
     data^.Level := 0;
@@ -178,6 +179,26 @@ begin
   lstFiles.Refresh;
   lstFiles.FullExpand;
   lstFiles.EndUpdate;
+end;
+
+function TfrmSettings.FormatByteSize(const bytes: Longint): string;
+const
+  B = 1; //byte
+  KB = 1024 * B; //kilobyte
+  MB = 1024 * KB; //megabyte
+  GB = 1024 * MB; //gigabyte
+begin
+//  if bytes > GB then
+//    result := FormatFloat('#.## GB', bytes / GB)
+//  else
+//    if bytes > MB then
+//      result := FormatFloat('#.## MB', bytes / MB)
+//    else
+//      if bytes > KB then
+//        result := FormatFloat('# KB', bytes / KB)
+//      else
+//        //result := FormatFloat('#.## bytes', bytes);
+        result := FormatFloat('#,##0', bytes);
 end;
 
 end.

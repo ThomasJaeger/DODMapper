@@ -3,7 +3,7 @@ object frmSettings: TfrmSettings
   Top = 0
   Caption = 'Settings'
   ClientHeight = 667
-  ClientWidth = 723
+  ClientWidth = 585
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object frmSettings: TfrmSettings
     AlignWithMargins = True
     Left = 10
     Top = 5
-    Width = 703
+    Width = 565
     Height = 207
     Margins.Left = 10
     Margins.Top = 5
@@ -31,6 +31,9 @@ object frmSettings: TfrmSettings
     ExplicitLeft = 15
     ExplicitTop = 10
     ExplicitWidth = 514
+    DesignSize = (
+      565
+      207)
     object sLabel1: TsLabel
       Left = 48
       Top = 35
@@ -73,8 +76,9 @@ object frmSettings: TfrmSettings
     object txtHost: TsEdit
       Left = 89
       Top = 32
-      Width = 584
+      Width = 458
       Height = 26
+      Anchors = [akLeft, akTop, akRight]
       Color = 4804169
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 13816530
@@ -83,6 +87,7 @@ object frmSettings: TfrmSettings
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 584
     end
     object txtUsername: TsEdit
       Left = 89
@@ -136,6 +141,7 @@ object frmSettings: TfrmSettings
       Width = 192
       Height = 25
       Caption = 'Test Connection'
+      Default = True
       TabOrder = 4
       OnClick = btnTestConnectionClick
     end
@@ -144,7 +150,7 @@ object frmSettings: TfrmSettings
     AlignWithMargins = True
     Left = 10
     Top = 232
-    Width = 703
+    Width = 565
     Height = 375
     Margins.Left = 10
     Margins.Top = 10
@@ -160,7 +166,7 @@ object frmSettings: TfrmSettings
     object lstFiles: TVirtualStringTree
       Left = 2
       Top = 20
-      Width = 699
+      Width = 561
       Height = 353
       Align = alClient
       EmptyListMessage = '< Not connected >'
@@ -174,18 +180,19 @@ object frmSettings: TfrmSettings
       TreeOptions.SelectionOptions = [toFullRowSelect]
       OnGetText = lstFilesGetText
       OnGetImageIndex = lstFilesGetImageIndex
+      ExplicitWidth = 699
       ExplicitHeight = 392
       Columns = <
         item
           Position = 0
-          Width = 528
+          Width = 390
           WideText = 'Name'
         end
         item
           Alignment = taRightJustify
           Position = 1
           Width = 150
-          WideText = 'Size (in KBytes)'
+          WideText = 'Size in Bytes'
         end>
       WideDefaultText = ''
     end
@@ -193,17 +200,18 @@ object frmSettings: TfrmSettings
   object sPanel1: TsPanel
     Left = 0
     Top = 617
-    Width = 723
+    Width = 585
     Height = 50
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
     ExplicitTop = 656
+    ExplicitWidth = 723
     DesignSize = (
-      723
+      585
       50)
     object btnCancel: TsButton
-      Left = 551
+      Left = 413
       Top = 10
       Width = 75
       Height = 25
@@ -212,9 +220,10 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 0
+      ExplicitLeft = 551
     end
     object btnApply: TsButton
-      Left = 632
+      Left = 494
       Top = 10
       Width = 75
       Height = 25
@@ -222,6 +231,7 @@ object frmSettings: TfrmSettings
       Caption = 'Apply'
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 632
     end
   end
 end
