@@ -3,7 +3,7 @@ DOD Mapper
 A simple tool to allow uploading DOD maps to your DOD server. It uses FTP to upload the maps.
 
 Download and run the latest version DODMapper.exe file from the release folder at
-https://github.com/ThomasJaeger/DODMapper/tree/master/Win32/Release
+https://github.com/ThomasJaeger/DODMapper/blob/master/Win32/Release/DODMapper.exe
 
 Update - 10-14-2017
 -------------------
