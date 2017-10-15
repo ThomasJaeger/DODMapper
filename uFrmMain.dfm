@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'DOD Mapper'
-  ClientHeight = 666
-  ClientWidth = 997
+  ClientHeight = 879
+  ClientWidth = 1268
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,28 +13,33 @@ object frmMain: TfrmMain
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 18
   object sSplitter1: TsSplitter
-    Left = 475
+    Left = 622
     Top = 89
-    Height = 471
+    Height = 684
+    ShowGrip = True
+    ExplicitLeft = 475
     ExplicitHeight = 530
   end
   object sSplitter2: TsSplitter
     Left = 0
-    Top = 560
-    Width = 997
+    Top = 773
+    Width = 1268
     Height = 6
     Cursor = crVSplit
     Align = alBottom
+    ShowGrip = True
     ExplicitLeft = 8
     ExplicitTop = 596
+    ExplicitWidth = 997
   end
   object sPanel1: TsPanel
     Left = 0
     Top = 0
-    Width = 997
+    Width = 1268
     Height = 41
     Align = alTop
     Caption = 
@@ -42,13 +47,14 @@ object frmMain: TfrmMain
       '. It will NOT overwrite any files that already exist in the targ' +
       'et FTP folder.'
     TabOrder = 0
+    ExplicitWidth = 997
   end
   object sGroupBox1: TsGroupBox
     AlignWithMargins = True
     Left = 5
     Top = 94
-    Width = 465
-    Height = 461
+    Width = 612
+    Height = 674
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -56,56 +62,82 @@ object frmMain: TfrmMain
     Align = alLeft
     Caption = 'MAP Files to upload (should be ZIP files)'
     TabOrder = 1
-    ExplicitLeft = 0
-    ExplicitTop = 89
-    ExplicitHeight = 577
     object lstMAPFiles: TVirtualStringTree
       AlignWithMargins = True
-      Left = 12
-      Top = 25
-      Width = 441
-      Height = 424
-      Margins.Left = 10
-      Margins.Top = 5
-      Margins.Right = 10
-      Margins.Bottom = 10
+      Left = 17
+      Top = 35
+      Width = 578
+      Height = 572
+      Margins.Left = 15
+      Margins.Top = 15
+      Margins.Right = 15
+      Margins.Bottom = 15
       Align = alClient
       EmptyListMessage = '< No map files selected >'
       Header.AutoSizeIndex = 0
-      Header.Height = 22
+      Header.Height = 30
       Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
       Header.ParentFont = True
       Images = dm.TreeImages
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
-      ExplicitHeight = 530
+      OnGetText = lstMAPFilesGetText
+      ExplicitLeft = 12
+      ExplicitTop = 25
+      ExplicitWidth = 585
+      ExplicitHeight = 344
       Columns = <
         item
           Position = 0
-          Width = 140
-          WideText = 'Name'
+          Width = 557
+          WideText = 'File Name'
         end
         item
           Alignment = taRightJustify
+          Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus, coEditable]
           Position = 1
           Width = 120
           WideText = 'Size in Bytes'
         end
         item
+          Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus, coEditable]
           Position = 2
           Width = 160
           WideText = 'Date / Time'
         end>
       WideDefaultText = ''
     end
+    object sPanel4: TsPanel
+      AlignWithMargins = True
+      Left = 17
+      Top = 623
+      Width = 578
+      Height = 48
+      Margins.Left = 15
+      Margins.Top = 1
+      Margins.Right = 15
+      Margins.Bottom = 1
+      Align = alBottom
+      TabOrder = 1
+      ExplicitTop = 630
+      object btnClearList: TsButton
+        Left = 24
+        Top = 8
+        Width = 177
+        Height = 30
+        Caption = 'Clear List'
+        TabOrder = 0
+        OnClick = btnClearListClick
+      end
+    end
   end
   object sGroupBox2: TsGroupBox
     AlignWithMargins = True
-    Left = 486
+    Left = 633
     Top = 94
-    Width = 506
-    Height = 461
+    Width = 630
+    Height = 674
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -119,30 +151,32 @@ object frmMain: TfrmMain
     ExplicitHeight = 105
     object lstServer: TVirtualStringTree
       AlignWithMargins = True
-      Left = 12
-      Top = 25
-      Width = 482
-      Height = 424
-      Margins.Left = 10
-      Margins.Top = 5
-      Margins.Right = 10
-      Margins.Bottom = 10
+      Left = 17
+      Top = 35
+      Width = 596
+      Height = 622
+      Margins.Left = 15
+      Margins.Top = 15
+      Margins.Right = 15
+      Margins.Bottom = 15
       Align = alClient
       EmptyListMessage = '< Not connected >'
       Header.AutoSizeIndex = 0
-      Header.Height = 22
+      Header.Height = 30
       Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
       Header.ParentFont = True
       Images = dm.TreeImages
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
-      ExplicitWidth = 478
-      ExplicitHeight = 530
+      ExplicitLeft = 12
+      ExplicitTop = 25
+      ExplicitWidth = 482
+      ExplicitHeight = 424
       Columns = <
         item
           Position = 0
-          Width = 181
+          Width = 295
           WideText = 'Name'
         end
         item
@@ -162,10 +196,11 @@ object frmMain: TfrmMain
   object sPanel2: TsPanel
     Left = 0
     Top = 41
-    Width = 997
+    Width = 1268
     Height = 48
     Align = alTop
     TabOrder = 3
+    ExplicitTop = 38
     object btnConnect: TsButton
       Left = 242
       Top = 6
@@ -199,19 +234,22 @@ object frmMain: TfrmMain
       Height = 30
       Caption = '1. Add map files'
       TabOrder = 3
+      OnClick = btnAddMapFilesClick
     end
   end
   object sPanel3: TsPanel
     Left = 0
-    Top = 566
-    Width = 997
+    Top = 779
+    Width = 1268
     Height = 100
     Align = alBottom
     TabOrder = 4
+    ExplicitTop = 566
+    ExplicitWidth = 997
     object memStatus: TsMemo
       Left = 1
       Top = 1
-      Width = 995
+      Width = 1266
       Height = 98
       Align = alClient
       Color = 4804169
@@ -226,6 +264,7 @@ object frmMain: TfrmMain
       ScrollBars = ssBoth
       TabOrder = 0
       Text = 'Not connected'#13#10
+      ExplicitWidth = 995
       ExplicitHeight = 68
     end
   end
@@ -2891,5 +2930,11 @@ object frmMain: TfrmMain
         Action = dm.actAbout
       end
     end
+  end
+  object dlgOpen: TsOpenDialog
+    Filter = 'Zip Files (*.zip)|*.zip|All Files (*.*)|*.*'
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
+    Left = 496
+    Top = 584
   end
 end

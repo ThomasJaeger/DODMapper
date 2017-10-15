@@ -216,7 +216,7 @@ object frmSettings: TfrmSettings
     Align = alClient
     EmptyListMessage = '< Not connected >'
     Header.AutoSizeIndex = 0
-    Header.Height = 22
+    Header.Height = 30
     Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
     Header.ParentFont = True
     Images = dm.TreeImages
@@ -227,7 +227,6 @@ object frmSettings: TfrmSettings
     OnGetText = lstFilesGetText
     OnGetImageIndex = lstFilesGetImageIndex
     OnNodeDblClick = lstFilesNodeDblClick
-    ExplicitLeft = 5
     Columns = <
       item
         Position = 0

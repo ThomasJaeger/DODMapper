@@ -17,6 +17,13 @@ type
     ModifiedDate: string;
   end;
 
+  PMapFile = ^TMapFile;
+  TMapFile = record
+    FileName: string;
+    Size: integer;
+    DateTime: string;
+  end;
+
   Tdm = class(TDataModule)
     ftp: TIdFTP;
     ActionManager1: TActionManager;
