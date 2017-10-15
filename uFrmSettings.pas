@@ -28,6 +28,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure lstFilesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
       TextType: TVSTTextType; var CellText: string);
+    procedure lstFilesGetImageIndex(Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
+      Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
   private
     FFiles: TStringList;
     procedure Synchronize;
@@ -109,6 +111,19 @@ begin
   lstFiles.NodeDataSize := SizeOf(TFTPData);
 end;
 
+procedure TfrmSettings.lstFilesGetImageIndex(Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
+  Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
+var
+  Data: PFTPData;
+begin
+  Data := Sender.GetNodeData(Node);
+  if (Kind in [ikNormal, ikSelected]) and (Column = 0) then
+  begin
+    if Data.Dir then
+      ImageIndex := 13;
+  end;
+end;
+
 procedure TfrmSettings.lstFilesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
   TextType: TVSTTextType; var CellText: string);
 var
@@ -117,7 +132,13 @@ begin
   Data := Sender.GetNodeData(Node);
   case Column of
     0: CellText := Data.Name;
-    1: CellText := inttostr(Data.Size);
+    1:
+      begin
+        if Data.Size > 0 then
+          CellText := inttostr(Data.Size)
+        else
+          CellText := '';
+      end;
   end;
 end;
 

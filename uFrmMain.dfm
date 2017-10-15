@@ -2684,6 +2684,7 @@ object frmMain: TfrmMain
   end
   object sSkinProvider1: TsSkinProvider
     ScreenSnap = True
+    AddedTitle.Text = 'Get latest version on Github'
     SkinData.SkinSection = 'FORM'
     TitleButtons = <>
     Left = 816

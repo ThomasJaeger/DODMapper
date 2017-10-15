@@ -168,10 +168,12 @@ object frmSettings: TfrmSettings
       Header.Height = 22
       Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
       Header.ParentFont = True
+      Images = dm.TreeImages
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
       OnGetText = lstFilesGetText
+      OnGetImageIndex = lstFilesGetImageIndex
       ExplicitHeight = 392
       Columns = <
         item

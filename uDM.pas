@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdExplicitTLSClientServerBase, IdFTP, System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan;
+  IdExplicitTLSClientServerBase, IdFTP, System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan,
+  Vcl.ImgList, Vcl.Controls;
 
 type
   Tdm = class(TDataModule)
@@ -12,6 +13,7 @@ type
     ActionManager1: TActionManager;
     actExit: TAction;
     actSettings: TAction;
+    TreeImages: TImageList;
     procedure actExitExecute(Sender: TObject);
     procedure actSettingsExecute(Sender: TObject);
   private
