@@ -12,6 +12,7 @@ object frmSettings: TfrmSettings
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 18
@@ -20,7 +21,7 @@ object frmSettings: TfrmSettings
     Left = 10
     Top = 5
     Width = 565
-    Height = 207
+    Height = 236
     Margins.Left = 10
     Margins.Top = 5
     Margins.Right = 10
@@ -28,12 +29,9 @@ object frmSettings: TfrmSettings
     Align = alTop
     Caption = 'DOD Server FTP Login Information'
     TabOrder = 0
-    ExplicitLeft = 15
-    ExplicitTop = 10
-    ExplicitWidth = 514
     DesignSize = (
       565
-      207)
+      236)
     object sLabel1: TsLabel
       Left = 48
       Top = 35
@@ -73,6 +71,16 @@ object frmSettings: TfrmSettings
       Caption = 'P&ort:'
       FocusControl = txtPort
     end
+    object sLabel5: TsLabel
+      Left = 17
+      Top = 163
+      Width = 66
+      Height = 18
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = '&Folder:'
+      FocusControl = txtFolder
+    end
     object txtHost: TsEdit
       Left = 89
       Top = 32
@@ -87,7 +95,6 @@ object frmSettings: TfrmSettings
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 584
     end
     object txtUsername: TsEdit
       Left = 89
@@ -137,64 +144,29 @@ object frmSettings: TfrmSettings
     end
     object btnTestConnection: TsButton
       Left = 89
-      Top = 168
+      Top = 200
       Width = 192
       Height = 25
       Caption = 'Test Connection'
       Default = True
-      TabOrder = 4
+      TabOrder = 5
       OnClick = btnTestConnectionClick
     end
-  end
-  object sGroupBox2: TsGroupBox
-    AlignWithMargins = True
-    Left = 10
-    Top = 232
-    Width = 565
-    Height = 375
-    Margins.Left = 10
-    Margins.Top = 10
-    Margins.Right = 10
-    Margins.Bottom = 10
-    Align = alClient
-    Caption = 'Server Content'
-    TabOrder = 1
-    ExplicitLeft = 186
-    ExplicitTop = 280
-    ExplicitWidth = 185
-    ExplicitHeight = 105
-    object lstFiles: TVirtualStringTree
-      Left = 2
-      Top = 20
-      Width = 561
-      Height = 353
-      Align = alClient
-      EmptyListMessage = '< Not connected >'
-      Header.AutoSizeIndex = 0
-      Header.Height = 22
-      Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
-      Header.ParentFont = True
-      Images = dm.TreeImages
-      ScrollBarOptions.AlwaysVisible = True
-      TabOrder = 0
-      TreeOptions.SelectionOptions = [toFullRowSelect]
-      OnGetText = lstFilesGetText
-      OnGetImageIndex = lstFilesGetImageIndex
-      ExplicitWidth = 699
-      ExplicitHeight = 392
-      Columns = <
-        item
-          Position = 0
-          Width = 390
-          WideText = 'Name'
-        end
-        item
-          Alignment = taRightJustify
-          Position = 1
-          Width = 150
-          WideText = 'Size in Bytes'
-        end>
-      WideDefaultText = ''
+    object txtFolder: TsEdit
+      Left = 89
+      Top = 160
+      Width = 458
+      Height = 26
+      Color = 4804169
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 13816530
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      Text = '/'
+      OnKeyUp = txtFolderKeyUp
     end
   end
   object sPanel1: TsPanel
@@ -204,9 +176,7 @@ object frmSettings: TfrmSettings
     Height = 50
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
-    ExplicitTop = 656
-    ExplicitWidth = 723
+    TabOrder = 1
     DesignSize = (
       585
       50)
@@ -220,7 +190,6 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 0
-      ExplicitLeft = 551
     end
     object btnApply: TsButton
       Left = 494
@@ -231,7 +200,50 @@ object frmSettings: TfrmSettings
       Caption = 'Apply'
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 632
     end
+  end
+  object lstFiles: TVirtualStringTree
+    AlignWithMargins = True
+    Left = 10
+    Top = 256
+    Width = 565
+    Height = 351
+    Margins.Left = 10
+    Margins.Top = 5
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alClient
+    EmptyListMessage = '< Not connected >'
+    Header.AutoSizeIndex = 0
+    Header.Height = 22
+    Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
+    Header.ParentFont = True
+    Images = dm.TreeImages
+    ScrollBarOptions.AlwaysVisible = True
+    ScrollBarOptions.ScrollBars = ssVertical
+    TabOrder = 2
+    TreeOptions.SelectionOptions = [toFullRowSelect]
+    OnGetText = lstFilesGetText
+    OnGetImageIndex = lstFilesGetImageIndex
+    OnNodeDblClick = lstFilesNodeDblClick
+    ExplicitLeft = 5
+    Columns = <
+      item
+        Position = 0
+        Width = 264
+        WideText = 'Name'
+      end
+      item
+        Alignment = taRightJustify
+        Position = 1
+        Width = 120
+        WideText = 'Size in Bytes'
+      end
+      item
+        Position = 2
+        Width = 160
+        WideText = 'Date / Time'
+      end>
+    WideDefaultText = ''
   end
 end

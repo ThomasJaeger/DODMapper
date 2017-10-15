@@ -8,6 +8,15 @@ uses
   Vcl.ImgList, Vcl.Controls;
 
 type
+  PFTPData = ^TFTPData;
+  TFTPData = record
+    Name: string;
+    Size: integer;
+    Level: integer;
+    Dir: boolean;
+    ModifiedDate: string;
+  end;
+
   Tdm = class(TDataModule)
     ftp: TIdFTP;
     ActionManager1: TActionManager;
@@ -22,14 +31,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-  end;
-
-  PFTPData = ^TFTPData;
-  TFTPData = record
-    Name: string;
-    Size: integer;
-    Level: integer;
-    Dir: boolean;
   end;
 
 var

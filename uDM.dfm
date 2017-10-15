@@ -4,6 +4,7 @@ object dm: Tdm
   Width = 721
   object ftp: TIdFTP
     IPVersion = Id_IPv4
+    ListenTimeout = 20000
     NATKeepAlive.UseKeepAlive = False
     NATKeepAlive.IdleTimeMS = 0
     NATKeepAlive.IntervalMS = 0
