@@ -18,9 +18,18 @@ object frmMain: TfrmMain
   object sSplitter1: TsSplitter
     Left = 475
     Top = 89
-    Width = 10
-    Height = 577
-    ExplicitLeft = 377
+    Height = 471
+    ExplicitHeight = 530
+  end
+  object sSplitter2: TsSplitter
+    Left = 0
+    Top = 560
+    Width = 997
+    Height = 6
+    Cursor = crVSplit
+    Align = alBottom
+    ExplicitLeft = 8
+    ExplicitTop = 596
   end
   object sPanel1: TsPanel
     Left = 0
@@ -39,7 +48,7 @@ object frmMain: TfrmMain
     Left = 5
     Top = 94
     Width = 465
-    Height = 567
+    Height = 461
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -55,13 +64,13 @@ object frmMain: TfrmMain
       Left = 12
       Top = 25
       Width = 441
-      Height = 530
+      Height = 424
       Margins.Left = 10
       Margins.Top = 5
       Margins.Right = 10
       Margins.Bottom = 10
       Align = alClient
-      EmptyListMessage = '< Not connected >'
+      EmptyListMessage = '< No map files selected >'
       Header.AutoSizeIndex = 0
       Header.Height = 22
       Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
@@ -70,6 +79,7 @@ object frmMain: TfrmMain
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
+      ExplicitHeight = 530
       Columns = <
         item
           Position = 0
@@ -92,10 +102,10 @@ object frmMain: TfrmMain
   end
   object sGroupBox2: TsGroupBox
     AlignWithMargins = True
-    Left = 490
+    Left = 486
     Top = 94
-    Width = 502
-    Height = 567
+    Width = 506
+    Height = 461
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -111,8 +121,8 @@ object frmMain: TfrmMain
       AlignWithMargins = True
       Left = 12
       Top = 25
-      Width = 478
-      Height = 530
+      Width = 482
+      Height = 424
       Margins.Left = 10
       Margins.Top = 5
       Margins.Right = 10
@@ -127,10 +137,12 @@ object frmMain: TfrmMain
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
+      ExplicitWidth = 478
+      ExplicitHeight = 530
       Columns = <
         item
           Position = 0
-          Width = 177
+          Width = 181
           WideText = 'Name'
         end
         item
@@ -187,6 +199,34 @@ object frmMain: TfrmMain
       Height = 30
       Caption = '1. Add map files'
       TabOrder = 3
+    end
+  end
+  object sPanel3: TsPanel
+    Left = 0
+    Top = 566
+    Width = 997
+    Height = 100
+    Align = alBottom
+    TabOrder = 4
+    object memStatus: TsMemo
+      Left = 1
+      Top = 1
+      Width = 995
+      Height = 98
+      Align = alClient
+      Color = 4804169
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 13816530
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        'Not connected')
+      ParentFont = False
+      ScrollBars = ssBoth
+      TabOrder = 0
+      Text = 'Not connected'#13#10
+      ExplicitHeight = 68
     end
   end
   object sSkinManager1: TsSkinManager

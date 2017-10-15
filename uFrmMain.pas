@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, sSkinProvider, sSkinManager, Vcl.StdCtrls, sButton, Vcl.ExtCtrls, sPanel,
   System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.Menus, sGroupBox, sLabel, sEdit,
-  uDM, sSplitter, VirtualTrees;
+  uDM, sSplitter, VirtualTrees, sMemo;
 
 type
   TfrmMain = class(TForm)
@@ -30,6 +30,9 @@ type
     btnDisconnect: TsButton;
     btnAddMapFiles: TsButton;
     lstMAPFiles: TVirtualStringTree;
+    sPanel3: TsPanel;
+    sSplitter2: TsSplitter;
+    memStatus: TsMemo;
   private
     { Private declarations }
   public
