@@ -12,7 +12,6 @@ type
   TfrmMain = class(TForm)
     sSkinManager1: TsSkinManager;
     sSkinProvider1: TsSkinProvider;
-    btnExit: TsButton;
     MainMenu1: TMainMenu;
     mnuFile: TMenuItem;
     mnuExit: TMenuItem;

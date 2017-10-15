@@ -13,9 +13,6 @@ object frmMain: TfrmMain
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
-  DesignSize = (
-    997
-    666)
   PixelsPerInch = 96
   TextHeight = 18
   object sLabel1: TsLabel
@@ -35,16 +32,6 @@ object frmMain: TfrmMain
       '. It will NOT overwrite any files that already exist in the targ' +
       'et FTP folder.'
     ExplicitWidth = 932
-  end
-  object btnExit: TsButton
-    Left = 914
-    Top = 633
-    Width = 75
-    Height = 25
-    Action = dm.actExit
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    TabOrder = 0
   end
   object sSkinManager1: TsSkinManager
     AnimEffects.BlendOnMoving.Active = True
