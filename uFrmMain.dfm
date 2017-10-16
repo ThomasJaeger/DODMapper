@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 18
@@ -47,7 +48,6 @@ object frmMain: TfrmMain
       '. It will NOT overwrite any files that already exist in the targ' +
       'et FTP folder.'
     TabOrder = 0
-    ExplicitWidth = 997
   end
   object sGroupBox1: TsGroupBox
     AlignWithMargins = True
@@ -83,10 +83,6 @@ object frmMain: TfrmMain
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
       OnGetText = lstMAPFilesGetText
-      ExplicitLeft = 12
-      ExplicitTop = 25
-      ExplicitWidth = 585
-      ExplicitHeight = 344
       Columns = <
         item
           Position = 0
@@ -120,7 +116,6 @@ object frmMain: TfrmMain
       Margins.Bottom = 1
       Align = alBottom
       TabOrder = 1
-      ExplicitTop = 630
       object btnClearList: TsButton
         Left = 24
         Top = 8
@@ -145,16 +140,12 @@ object frmMain: TfrmMain
     Align = alClient
     Caption = 'FTP Server Content'
     TabOrder = 2
-    ExplicitLeft = 680
-    ExplicitTop = 272
-    ExplicitWidth = 185
-    ExplicitHeight = 105
-    object lstServer: TVirtualStringTree
+    object lstFtpFiles: TVirtualStringTree
       AlignWithMargins = True
       Left = 17
       Top = 35
       Width = 596
-      Height = 622
+      Height = 572
       Margins.Left = 15
       Margins.Top = 15
       Margins.Right = 15
@@ -169,10 +160,10 @@ object frmMain: TfrmMain
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
       TreeOptions.SelectionOptions = [toFullRowSelect]
-      ExplicitLeft = 12
-      ExplicitTop = 25
-      ExplicitWidth = 482
-      ExplicitHeight = 424
+      OnGetText = lstFtpFilesGetText
+      OnGetImageIndex = lstFtpFilesGetImageIndex
+      OnGetNodeDataSize = lstFtpFilesGetNodeDataSize
+      OnNodeDblClick = lstFtpFilesNodeDblClick
       Columns = <
         item
           Position = 0
@@ -192,6 +183,49 @@ object frmMain: TfrmMain
         end>
       WideDefaultText = ''
     end
+    object sPanel5: TsPanel
+      AlignWithMargins = True
+      Left = 17
+      Top = 623
+      Width = 596
+      Height = 48
+      Margins.Left = 15
+      Margins.Top = 1
+      Margins.Right = 15
+      Margins.Bottom = 1
+      Align = alBottom
+      TabOrder = 1
+      DesignSize = (
+        596
+        48)
+      object sLabel5: TsLabel
+        Left = 17
+        Top = 14
+        Width = 48
+        Height = 18
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'F&older:'
+        FocusControl = txtFolder
+      end
+      object txtFolder: TsEdit
+        Left = 71
+        Top = 12
+        Width = 506
+        Height = 26
+        Anchors = [akLeft, akTop, akRight]
+        Color = 4804169
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 13816530
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        Text = '/'
+        OnKeyUp = txtFolderKeyUp
+      end
+    end
   end
   object sPanel2: TsPanel
     Left = 0
@@ -200,14 +234,15 @@ object frmMain: TfrmMain
     Height = 48
     Align = alTop
     TabOrder = 3
-    ExplicitTop = 38
     object btnConnect: TsButton
       Left = 242
       Top = 6
       Width = 177
       Height = 30
-      Caption = '2. Connect to server'
+      Caption = '2. Get server content'
+      Default = True
       TabOrder = 0
+      OnClick = btnConnectClick
     end
     object btnUpload: TsButton
       Left = 461
@@ -217,6 +252,7 @@ object frmMain: TfrmMain
       Caption = '3. Upload map files'
       Enabled = False
       TabOrder = 1
+      OnClick = btnUploadClick
     end
     object btnDisconnect: TsButton
       Left = 680
@@ -226,6 +262,7 @@ object frmMain: TfrmMain
       Caption = '4. Disconnect'
       Enabled = False
       TabOrder = 2
+      OnClick = btnDisconnectClick
     end
     object btnAddMapFiles: TsButton
       Left = 24
@@ -244,8 +281,6 @@ object frmMain: TfrmMain
     Height = 100
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 566
-    ExplicitWidth = 997
     object memStatus: TsMemo
       Left = 1
       Top = 1
@@ -264,8 +299,6 @@ object frmMain: TfrmMain
       ScrollBars = ssBoth
       TabOrder = 0
       Text = 'Not connected'#13#10
-      ExplicitWidth = 995
-      ExplicitHeight = 68
     end
   end
   object sSkinManager1: TsSkinManager

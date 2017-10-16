@@ -1,5 +1,6 @@
 object dm: Tdm
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 508
   Width = 721
   object ftp: TIdFTP

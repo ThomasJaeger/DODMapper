@@ -14,6 +14,7 @@ object frmSettings: TfrmSettings
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 18
   object sGroupBox1: TsGroupBox
@@ -201,6 +202,7 @@ object frmSettings: TfrmSettings
       Caption = 'Apply'
       ModalResult = 1
       TabOrder = 1
+      OnClick = btnApplyClick
     end
   end
   object lstFiles: TVirtualStringTree

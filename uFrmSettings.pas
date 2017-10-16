@@ -34,12 +34,13 @@ type
     procedure lstFilesNodeDblClick(Sender: TBaseVirtualTree; const HitInfo: THitInfo);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure txtFolderKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure btnApplyClick(Sender: TObject);
   private
     FFiles: TStringList;
     FFTPItems: TList<TFTPData>;
     FFolder: string;
     procedure Synchronize;
-    function FormatByteSize(const bytes: Longint): string;
     procedure TestConnection;
   public
     { Public declarations }
@@ -54,6 +55,15 @@ implementation
 
 uses
   IdFTPList;
+
+procedure TfrmSettings.btnApplyClick(Sender: TObject);
+begin
+  dm.Host := txtHost.Text;
+  dm.Username := txtUsername.Text;
+  dm.Password := txtPassword.Text;
+  dm.Port := txtPort.Value;
+  dm.WriteIniFile;
+end;
 
 procedure TfrmSettings.btnTestConnectionClick(Sender: TObject);
 begin
@@ -71,6 +81,14 @@ begin
   FFiles := TStringList.Create;
   FFTPItems := TList<TFTPData>.Create;
   lstFiles.NodeDataSize := SizeOf(TFTPData);
+end;
+
+procedure TfrmSettings.FormShow(Sender: TObject);
+begin
+  txtHost.Text := dm.Host;
+  txtUsername.Text := dm.Username;
+  txtPassword.Text := dm.Password;
+  txtPort.Value := dm.Port;
 end;
 
 procedure TfrmSettings.lstFilesGetImageIndex(Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
@@ -97,7 +115,7 @@ begin
     1:
       begin
         if Data.Size > 0 then
-          CellText := FormatByteSize(Data.Size)
+          CellText := dm.FormatByteSize(Data.Size)
         else
           CellText := '';
       end;
@@ -144,26 +162,6 @@ begin
 
   lstFiles.Refresh;
   lstFiles.EndUpdate;
-end;
-
-function TfrmSettings.FormatByteSize(const bytes: Longint): string;
-const
-  B = 1; //byte
-  KB = 1024 * B; //kilobyte
-  MB = 1024 * KB; //megabyte
-  GB = 1024 * MB; //gigabyte
-begin
-//  if bytes > GB then
-//    result := FormatFloat('#.## GB', bytes / GB)
-//  else
-//    if bytes > MB then
-//      result := FormatFloat('#.## MB', bytes / MB)
-//    else
-//      if bytes > KB then
-//        result := FormatFloat('# KB', bytes / KB)
-//      else
-//        //result := FormatFloat('#.## bytes', bytes);
-        result := FormatFloat('#,##0', bytes);
 end;
 
 procedure TfrmSettings.TestConnection;
