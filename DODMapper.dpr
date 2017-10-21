@@ -5,7 +5,8 @@ uses
   uFrmMain in 'uFrmMain.pas' {frmMain},
   uFrmSettings in 'uFrmSettings.pas' {frmSettings},
   uDM in 'uDM.pas' {dm: TDataModule},
-  uFrmAbout in 'uFrmAbout.pas' {frmAbout};
+  uFrmAbout in 'uFrmAbout.pas' {frmAbout},
+  uFTPItem in 'uFTPItem.pas';
 
 {$R *.res}
 

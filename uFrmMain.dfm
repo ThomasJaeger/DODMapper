@@ -15,6 +15,7 @@ object frmMain: TfrmMain
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 18
   object sSplitter1: TsSplitter
@@ -81,7 +82,8 @@ object frmMain: TfrmMain
       Images = dm.TreeImages
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
-      TreeOptions.SelectionOptions = [toFullRowSelect]
+      TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toThemeAware, toUseBlendedImages]
+      TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect]
       OnGetText = lstMAPFilesGetText
       Columns = <
         item
@@ -121,9 +123,18 @@ object frmMain: TfrmMain
         Top = 8
         Width = 177
         Height = 30
-        Caption = 'Clear List'
+        Caption = '&Clear List'
         TabOrder = 0
         OnClick = btnClearListClick
+      end
+      object btnRemove: TsButton
+        Left = 220
+        Top = 8
+        Width = 177
+        Height = 30
+        Caption = '&Remove map file'
+        TabOrder = 1
+        OnClick = btnRemoveClick
       end
     end
   end
@@ -159,6 +170,7 @@ object frmMain: TfrmMain
       Images = dm.TreeImages
       ScrollBarOptions.AlwaysVisible = True
       TabOrder = 0
+      TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages]
       TreeOptions.SelectionOptions = [toFullRowSelect]
       OnGetText = lstFtpFilesGetText
       OnGetImageIndex = lstFtpFilesGetImageIndex
@@ -199,8 +211,8 @@ object frmMain: TfrmMain
         596
         48)
       object sLabel5: TsLabel
-        Left = 17
-        Top = 14
+        Left = 98
+        Top = 15
         Width = 48
         Height = 18
         Alignment = taRightJustify
@@ -209,9 +221,9 @@ object frmMain: TfrmMain
         FocusControl = txtFolder
       end
       object txtFolder: TsEdit
-        Left = 71
+        Left = 152
         Top = 12
-        Width = 506
+        Width = 425
         Height = 26
         Anchors = [akLeft, akTop, akRight]
         Color = 4804169
@@ -224,6 +236,16 @@ object frmMain: TfrmMain
         TabOrder = 0
         Text = '/'
         OnKeyUp = txtFolderKeyUp
+      end
+      object btnBack: TsButton
+        Left = 12
+        Top = 10
+        Width = 80
+        Height = 30
+        Caption = '&Back'
+        Enabled = False
+        TabOrder = 1
+        OnClick = btnBackClick
       end
     end
   end
@@ -239,7 +261,7 @@ object frmMain: TfrmMain
       Top = 6
       Width = 177
       Height = 30
-      Caption = '2. Get server content'
+      Caption = '2. &Get server list'
       Default = True
       TabOrder = 0
       OnClick = btnConnectClick
@@ -249,7 +271,7 @@ object frmMain: TfrmMain
       Top = 6
       Width = 177
       Height = 30
-      Caption = '3. Upload map files'
+      Caption = '3. &Upload map files'
       Enabled = False
       TabOrder = 1
       OnClick = btnUploadClick
@@ -259,7 +281,7 @@ object frmMain: TfrmMain
       Top = 6
       Width = 177
       Height = 30
-      Caption = '4. Disconnect'
+      Caption = '4. &Disconnect'
       Enabled = False
       TabOrder = 2
       OnClick = btnDisconnectClick
@@ -269,7 +291,7 @@ object frmMain: TfrmMain
       Top = 6
       Width = 177
       Height = 30
-      Caption = '1. Add map files'
+      Caption = '1. &Add map files'
       TabOrder = 3
       OnClick = btnAddMapFilesClick
     end
@@ -288,10 +310,10 @@ object frmMain: TfrmMain
       Height = 98
       Align = alClient
       Color = 4804169
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = 13816530
       Font.Height = -15
-      Font.Name = 'Tahoma'
+      Font.Name = 'Courier New'
       Font.Style = []
       Lines.Strings = (
         'Not connected')
@@ -2913,7 +2935,7 @@ object frmMain: TfrmMain
     ThirdParty.ThirdListViews = ' '#13#10
     ThirdParty.ThirdPanels = ' '#13#10
     ThirdParty.ThirdGrids = ' '#13#10
-    ThirdParty.ThirdTreeViews = ' '#13#10
+    ThirdParty.ThirdTreeViews = ' '#13#10'TAbTreeView'#13#10
     ThirdParty.ThirdComboBoxes = ' '#13#10
     ThirdParty.ThirdWWEdits = ' '#13#10
     ThirdParty.ThirdVirtualTrees = 
@@ -2968,6 +2990,13 @@ object frmMain: TfrmMain
     Filter = 'Zip Files (*.zip)|*.zip|All Files (*.*)|*.*'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 496
+    Top = 584
+  end
+  object zip: TAbZipKit
+    AutoSave = False
+    DOSMode = False
+    ExtractOptions = []
+    Left = 400
     Top = 584
   end
 end
