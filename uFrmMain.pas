@@ -266,6 +266,7 @@ begin
           end;
         end;
       end;
+      Log('Done!');
       UpdateUI;
     finally
       ToStream.Free;
