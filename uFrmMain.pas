@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, sSkinProvider, sSkinManager, Vcl.StdCtrls, sButton, Vcl.ExtCtrls, sPanel,
   System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.Menus, sGroupBox, sLabel, sEdit,
   uDM, sSplitter, VirtualTrees, sMemo, sDialogs, System.Generics.Collections, IdAllFTPListParsers, IdFTPList,
-  Vcl.ComCtrls, AbComCtrls, AbBase, AbBrowse, AbZBrows, AbZipper, AbZipKit, AbArcTyp, uFTPItem, AnsiStrings;
+  Vcl.ComCtrls, AbComCtrls, AbBase, AbBrowse, AbZBrows, AbZipper, AbZipKit, AbArcTyp, uFTPItem, AnsiStrings,
+  acProgressBar;
 
 type
   TfrmMain = class(TForm)
@@ -43,6 +44,11 @@ type
     btnRemove: TsButton;
     zip: TAbZipKit;
     btnBack: TsButton;
+    sSplitter3: TsSplitter;
+    sPanel6: TsPanel;
+    sLabel1: TsLabel;
+    sProgressBar1: TsProgressBar;
+    lblUploadProgress: TsLabel;
     procedure btnAddMapFilesClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lstMAPFilesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -66,6 +72,10 @@ type
     FMapFiles: TList<TMapFile>;
     FCurrentNode: TFTPItem;
     FFoundNode: TFTPItem;
+    FRoot: TFTPItem;
+    FDOD: TFTPItem; // /dod/ folder
+    FLogFileName: string;
+    FLogFile: TextFile;
     procedure SynchronizeMapFiles;
     procedure SynchronizeFtpFiles(ftpNode: TFTPItem);
     procedure Connect;
@@ -76,8 +86,12 @@ type
     function ChangeFolder(node: TFTPItem; folder: string): TFTPItem;
     function GetRootNode(node: TFTPItem): TFTPItem;
     function SearchTree(node: TFTPItem; fn: string): TFTPItem;
-    procedure UpdateNode(node: TFTPItem; folder: string; item: TAbArchiveItem; cleanFileName: string);
+    procedure UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream);
     function CleanItem(zipFileName: string; itemFileName: string): string;
+    function GetDODFolder: TFTPItem;
+    procedure CreateFolders(fullpath: string; currentFolder: string);
+    procedure ConnectoToFTPServer;
+    procedure Log(status: string);
   public
     { Public declarations }
   end;
@@ -113,9 +127,9 @@ procedure TfrmMain.btnBackClick(Sender: TObject);
 begin
   if FCurrentNode.Parent <> nil then
     FCurrentNode := FCurrentNode.Parent;
-  lstFtpFiles.RootNodeCount := FCurrentNode.Children.Count;
-  txtFolder.Text := FCurrentNode.Folder;
-  SynchronizeFtpFiles(FCurrentNode);
+
+  UpdateUI;
+
   if FCurrentNode.Parent = nil then
     btnBack.Enabled := false;
 end;
@@ -124,7 +138,7 @@ procedure TfrmMain.btnClearListClick(Sender: TObject);
 begin
   FMapFiles.Clear;
   SynchronizeMapFiles;
-  memStatus.Lines.Add('Cleared list');
+  Log('Cleared list');
   UpdateUI;
 end;
 
@@ -143,7 +157,7 @@ begin
   if not dm.ftp.Connected then
   begin
     UpdateUI;
-    memStatus.Lines.Add('Disconnected from '+dm.Host+' on port '+inttostr(dm.Port));
+    Log('Disconnected from '+dm.Host+' on port '+inttostr(dm.Port));
   end;
 end;
 
@@ -168,7 +182,7 @@ begin
       begin
         data := lstMAPFiles.GetNodeData(node);
         removedMapFiles.Add(data.FileName);
-        memStatus.Lines.Add('Removed '+data.FileName);
+        Log('Removed '+data.FileName);
       end;
     end;
 
@@ -202,8 +216,19 @@ var
   x: Integer;
   folder: string;
   cleanFileName: string;
+  fileName: string;
 begin
   if FCurrentNode = nil then exit;
+
+  FRoot := GetRootNode(FCurrentNode);
+  FDOD := GetDODFolder;
+  FCurrentNode := FDOD;
+
+  // Change the folder on ther server to the DOD folder
+  ConnectoToFTPServer;
+  dm.ftp.ChangeDir(FDOD.Folder);
+  UpdateUI;
+
   if CorrectTargetFolder then
   begin
     Screen.Cursor := crHourGlass;
@@ -214,36 +239,39 @@ begin
     try
       for i := 0 to FMapFiles.Count-1 do
       begin
-        memStatus.Lines.Add('***********'+StringOfChar('*',length(FMapFiles[i].Filename)));
-        memStatus.Lines.Add('Processing '+FMapFiles[i].Filename);
+        Log('***********'+StringOfChar('*',length(FMapFiles[i].Filename)));
+        Log('Processing '+FMapFiles[i].Filename);
         zip.OpenArchive(FMapFiles[i].Filename);
         for x := 0 to zip.Count-1 do
         begin
           Item := zip.Items[x];
           cleanFileName := CleanItem(FMapFiles[i].Filename, Item.FileName);
+          if Item.FileName[length(Item.FileName)] = '/' then
+          begin
+            // It's a folder, remove '/' at end
+            fileName := folder+copy(Item.FileName,1,length(Item.FileName)-1)
+          end else
+            fileName := folder+Item.FileName;
           if length(cleanFileName)>0 then
           begin
-            if DoesFTpFileExist(cleanFileName) then
+            if DoesFTpFileExist(fileName) then
             begin
-              memStatus.Lines.Add('Skipping '+cleanFileName);
+              Log('Skipping '+fileName);
             end else
             begin
               zip.ExtractToStream(Item.FileName, ToStream);
               ToStream.Position := 0;
-              memStatus.Lines.Add('(Simulation only for now) Uploading '+folder+cleanFileName);
-              //dm.ftp.Put(ToStream,destFolder+cleanFileName,false);
-              UpdateNode(FCurrentNode, folder, Item, cleanFileName);
+              UpdateNode(folder, Item, cleanFileName, ToStream);
             end;
           end;
         end;
       end;
-      SynchronizeFtpFiles(FCurrentNode);
+      UpdateUI;
     finally
       ToStream.Free;
       Screen.Cursor := crArrow;
     end;
-  end else
-    ShowMessage('Please change the folder to the /dod folder before uploading map files.');
+  end;
 end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -251,6 +279,7 @@ begin
   try
     if dm.ftp.Connected then
       dm.ftp.Disconnect(false);
+    CloseFile(FLogFile);
   except
 
   end;
@@ -266,6 +295,13 @@ begin
   lstMAPFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetGlobalColor;
   lstFtpFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetGlobalColor;
   //lstFtpFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetHighLightColor(true);
+
+  FLogFileName := ExtractFilePath(Application.ExeName) + 'DODMapperLog.txt';
+  AssignFile(FLogFile, FLogFileName);
+  if FileExists(FLogFileName) then
+    Append(FLogFile)
+  else
+    Rewrite(FLogFile);
 end;
 
 procedure TfrmMain.lstFtpFilesGetImageIndex(Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
@@ -327,12 +363,7 @@ begin
             folder := folder + Data.Name;
           FCurrentNode := ChangeFolder(FCurrentNode,folder);
           if FCurrentNode <> nil then
-          begin
-            //WalkTree(ftpNode);
-            lstFtpFiles.RootNodeCount := FCurrentNode.Children.Count;
-            txtFolder.Text := FCurrentNode.Folder;
-            SynchronizeFtpFiles(FCurrentNode);
-          end;
+            UpdateUI;
         end;
       end;
   end;
@@ -372,7 +403,6 @@ begin
     data := lstMAPFiles.GetNodeData(node);
     data^.FileName := FMapFiles[i].FileName;
     //data^.Size := FMapFiles[i].Size;
-    //memStatus.Lines.Add('Added '+FMapFiles[i].FileName);
   end;
 
   lstMAPFiles.Refresh;
@@ -433,9 +463,23 @@ begin
   end;
 
   Screen.Cursor := crHourGlass;
-  with dm do
-  begin
-    try
+  try
+    ConnectoToFTPServer;
+    if dm.ftp.Connected then
+    begin
+      WalkTree(FCurrentNode);
+      UpdateUI;
+    end;
+  finally
+    Screen.Cursor := crArrow;
+  end;
+end;
+
+procedure TfrmMain.ConnectoToFTPServer;
+begin
+  try
+    with dm do
+    begin
       if not ftp.Connected then
       begin
         ftp.Host := dm.Host;
@@ -445,34 +489,42 @@ begin
         ftp.Connect;
         if ftp.Connected then
         begin
-          memStatus.Lines.Add('Connected to '+dm.Host+' on port '+inttostr(dm.Port));
+          Log('Connected to '+dm.Host+' on port '+inttostr(dm.Port));
           UpdateUI;
         end;
       end;
-      if ftp.Connected then
-      begin
-        WalkTree(FCurrentNode);
-        lstFtpFiles.RootNodeCount := FCurrentNode.Children.Count;
-        txtFolder.Text := FCurrentNode.Folder;
-        SynchronizeFtpFiles(FCurrentNode);
-      end;
-    finally
-      Screen.Cursor := crArrow;
     end;
+  except
+
   end;
 end;
 
 procedure TfrmMain.UpdateUI;
+var
+  connected: boolean;
 begin
-  if (FMapFiles.Count > 0) and dm.ftp.Connected then
+  try
+    connected := false;
+    connected := dm.ftp.Connected;
+  except
+  end;
+
+  if (FMapFiles.Count > 0) and connected then
     btnUpload.Enabled := true
   else
     btnUpload.Enabled := false;
 
-  if dm.ftp.Connected then
+  if connected then
     btnDisconnect.Enabled := true
   else
     btnDisconnect.Enabled := false;
+
+  if FCurrentNode <> nil then
+  begin
+    lstFtpFiles.RootNodeCount := FCurrentNode.Children.Count;
+    txtFolder.Text := FCurrentNode.Folder;
+    SynchronizeFtpFiles(FCurrentNode);
+  end;
 end;
 
 function TfrmMain.CorrectTargetFolder: boolean;
@@ -494,14 +546,12 @@ function TfrmMain.DoesFTpFileExist(fn: string): boolean;
 var
   i: Integer;
   fileName: string;
-  root: TFTPItem;
   FFoundFTPItem: TFTPItem;
 begin
   result := false;
   fileName := uppercase(fn);
-  root := GetRootNode(FCurrentNode);
   FFoundNode := nil;
-  FFoundFTPItem := SearchTree(root, '/DOD/'+fileName);
+  FFoundFTPItem := SearchTree(FRoot, fileName);
   if FFoundNode <> nil then
     result := true;
 end;
@@ -517,12 +567,12 @@ var
 begin
 //  FFiles.Clear;
 
-  memStatus.Lines.Add('Retrieving '+ftpItem.Folder);
+  Log('Retrieving '+ftpItem.Folder);
   dm.FTP.ChangeDir(ftpItem.Folder);
   files := TStringList.Create;
   dm.FTP.List(files,'',true);
   //dm.FTP.List('',true);
-  //memStatus.Lines.Add('Found '+inttostr(dm.FTP.DirectoryListing.Count)+' item(s)');
+  //Log('Found '+inttostr(dm.FTP.DirectoryListing.Count)+' item(s)');
 
   col := TIdFTPListItems.Create;
   dl := TList<TIdFTPListItem>.Create;
@@ -563,6 +613,7 @@ begin
       begin
         ftpChild.Dir := false;
       end;
+      //Log(ftpChild.Name);
       ftpItem.Children.Add(ftpChild);
     end;
   end;
@@ -602,6 +653,7 @@ end;
 function TfrmMain.SearchTree(node: TFTPItem; fn: string): TFTPItem;
 var
   i: Integer;
+  searchFor: string;
 begin
   if FFoundNode <> nil then
   begin
@@ -610,37 +662,177 @@ begin
   end;
 
   result := nil;
+  searchFor := uppercase(fn);
   for i := 0 to node.Children.Count-1 do
   begin
-    if node.Children[i].FullPathWithFileName = fn then
+    if node.Children[i].FullPathWithFileName = searchFor then
     begin
       result := node.Children[i];
       FFoundNode := result;
       exit;
     end;
     if node.Children[i].Dir then
-      result := SearchTree(node.Children[i], fn);
+      result := SearchTree(node.Children[i], searchFor);
   end;
 end;
 
-procedure TfrmMain.UpdateNode(node: TFTPItem; folder: string; item: TAbArchiveItem; cleanFileName: string);
+procedure TfrmMain.UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream);
 var
-  ftpItem: TFTPItem;
-  path: string;
+  ftpItem,existingFtpItem: TFTPItem;
+  fullPath: string;
+  delimiterPos: integer;
+  parent: TFTPItem;
+  i: Integer;
 begin
-  if node = nil then exit;
+  if FDOD = nil then exit;
 
   // 'sprites/obj_icons/dod_tiger2_b2/icon_obj_custom1_allies.spr'
-  path := item.FileName;
 
-  ftpItem := TFTPItem.Create(FCurrentNode);
-  ftpItem.FullPathWithFileName := uppercase(folder+item.FileName);
-  ftpItem.Folder := folder;
-  ftpItem.Name := cleanFileName;
-  ftpItem.Size := item.UncompressedSize;
-  ftpItem.Dir := item.IsDirectory;
-  ftpItem.ModifiedDate := datetimetostr(item.LastModTimeAsDateTime);
-  node.Children.Add(ftpItem);
+  // First, check if there are any folders in the zip item
+  //fullPath := folder + item.FileName;
+  fullPath := item.FileName;
+  delimiterPos := pos('/', fullPath);
+  if delimiterPos > 0 then
+  begin
+    // We have at least one folder in there
+    for i := length(fullPath)-1 downto 0 do
+    begin
+      if fullPath[i] = '/' then
+      begin
+        fullPath := copy(fullPath, 1, i-1);
+        break;
+      end;
+    end;
+    CreateFolders(fullPath, '');
+
+    // Get parent for the file/folder
+    FFoundNode := nil;
+    parent := SearchTree(FDOD,FDOD.Folder + '/' + fullPath);
+    if parent <> nil then
+    begin
+      // Update our local tree with a new FTPItem
+      ftpItem := TFTPItem.Create(parent);
+      ftpItem.FullPathWithFileName := uppercase(parent.Folder + '/' + cleanFileName);
+      ftpItem.Folder := parent.Folder;
+      ftpItem.Name := cleanFileName;
+      ftpItem.Size := item.UncompressedSize;
+      ftpItem.Dir := false;
+      ftpItem.ModifiedDate := datetimetostr(item.LastModTimeAsDateTime);
+      parent.Children.Add(ftpItem);
+
+      Log('Changing to folder ' + parent.Folder);
+      dm.ftp.ChangeDir(parent.Folder);
+      dm.CurrentFileSize := ftpItem.Size;
+      Log('Uploading '+cleanFileName);
+      try
+        dm.ftp.Put(ToStream,cleanFileName,false);
+      except
+      end;
+    end;
+  end else
+  begin
+    // Update our local tree with a new FTPItem
+    ftpItem := TFTPItem.Create(FDOD);
+    ftpItem.FullPathWithFileName := uppercase(FDOD.Folder + '/' + cleanFileName);
+    ftpItem.Folder := FDOD.Folder;
+    ftpItem.Name := cleanFileName;
+    ftpItem.Size := item.UncompressedSize;
+    ftpItem.Dir := false;
+    ftpItem.ModifiedDate := datetimetostr(item.LastModTimeAsDateTime);
+    FDOD.Children.Add(ftpItem);
+
+    Log('Changing to folder ' + FDOD.Folder);
+    dm.ftp.ChangeDir(FDOD.Folder);
+    Log('Uploading '+cleanFileName);
+    dm.CurrentFileSize := ftpItem.Size;
+    try
+      dm.ftp.Put(ToStream,cleanFileName,false);
+    except
+    end;
+  end;
+end;
+
+procedure TfrmMain.CreateFolders(fullpath: string; currentFolder: string);
+var
+  ftpItem,existingFtpItem: TFTPItem;
+  dir,path,leftDir: string;
+  delimiterPos: integer;
+  parent: TFTPItem;
+begin
+  // 'sprites/obj_icons/dod_tiger2_b2/icon_obj_custom1_allies.spr'
+
+  if currentFolder = '' then
+  begin
+    // Get first folder from full path
+    if length(fullpath) > 0 then
+    begin
+      delimiterPos := pos('/', fullpath);
+      if delimiterPos > 0 then
+      begin
+        dir := copy(fullpath,1,delimiterPos-1);
+        FFoundNode := nil;
+        existingFtpItem := SearchTree(FDOD,FDOD.Folder + '/' + dir);
+        if existingFtpItem = nil then
+        begin
+          // Folder does not exist, create it on the server
+          Log('Creating folder '+FDOD.Folder + '/' + dir);
+          dm.ftp.ChangeDir(FDOD.Folder);
+          dm.ftp.MakeDir(dir);
+
+          // Update our local tree with a new FTPItem
+          ftpItem := TFTPItem.Create(FDOD);
+          ftpItem.FullPathWithFileName := uppercase(FDOD.Folder + '/' + dir);
+          ftpItem.Folder := FDOD.Folder + '/' + dir;
+          ftpItem.Name := dir;
+          ftpItem.Size := 0;
+          ftpItem.Dir := true;
+          ftpItem.ModifiedDate := datetimetostr(now);
+          FDOD.Children.Add(ftpItem);
+        end;
+        CreateFolders(fullpath, dir);
+      end;
+    end;
+  end else
+  begin
+    // Keep going with the fullpath
+    leftDir := copy(fullPath,1,pos(currentFolder,fullPath)+length(currentFolder));
+    path := copy(fullPath,pos(currentFolder,fullPath)+length(currentFolder)+1);
+    delimiterPos := pos('/', path);
+    if delimiterPos > 0 then
+    begin
+      // We have at least one folder in there
+      dir := copy(path,1,delimiterPos-1);
+      FFoundNode := nil;
+      path := FDOD.Folder + '/' + leftDir + dir;
+      existingFtpItem := SearchTree(FDOD,path);
+      if existingFtpItem = nil then
+      begin
+        // Folder does not exist, create it on the server
+        Log('Creating folder '+path);
+        dm.ftp.ChangeDir(FDOD.Folder + '/' + leftDir);
+        dm.ftp.MakeDir(dir);
+
+        FFoundNode := nil;
+        parent := SearchTree(FDOD,FDOD.Folder + '/' + leftDir);
+
+        // Update our local tree with a new FTPItem
+        ftpItem := TFTPItem.Create(parent);
+        ftpItem.FullPathWithFileName := uppercase(path);
+        ftpItem.Folder := path;
+        ftpItem.Name := dir;
+        ftpItem.Size := 0;
+        ftpItem.Dir := true;
+        ftpItem.ModifiedDate := datetimetostr(now);
+        parent.Children.Add(ftpItem);
+      end;
+      CreateFolders(fullpath, dir);
+    end else
+    begin
+      // Stop recursive calls when path = ''
+      if path <> '' then
+        CreateFolders(fullpath, path);
+    end;
+  end;
 end;
 
 function TfrmMain.CleanItem(zipFileName: string; itemFileName: string): string;
@@ -656,6 +848,44 @@ begin
   if result <> '' then
     if result[length(result)] = '/' then
       result := copy(result,1,length(result)-1);
+  if pos('/',result) > 0 then
+  begin
+    for i := length(result)-1 downto 0 do
+    begin
+      if result[i] = '/' then
+      begin
+        result := copy(result, i+1);
+        break;
+      end;
+    end;
+  end;
+end;
+
+function TfrmMain.GetDODFolder: TFTPItem;
+var
+  i: Integer;
+begin
+  result := nil;
+  for i := 0 to FRoot.Children.Count-1 do
+  begin
+    if FRoot.Children[i].FullPathWithFileName = '/DOD' then
+    begin
+      result := FRoot.Children[i];
+      exit;
+    end;
+  end;
+end;
+
+procedure TfrmMain.Log(status: string);
+begin
+  memStatus.Lines.Add(status);
+
+  try
+    WriteLn(FLogFile, status);
+    Flush(FLogFile);
+  except
+
+  end;
 end;
 
 end.

@@ -116,3 +116,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.ini
+Win32/Debug/DODMapperLog.txt

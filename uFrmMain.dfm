@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Top = 0
   Caption = 'DOD Mapper'
   ClientHeight = 879
-  ClientWidth = 1268
+  ClientWidth = 1275
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,15 +21,15 @@ object frmMain: TfrmMain
   object sSplitter1: TsSplitter
     Left = 622
     Top = 89
-    Height = 684
+    Height = 637
     ShowGrip = True
     ExplicitLeft = 475
     ExplicitHeight = 530
   end
   object sSplitter2: TsSplitter
     Left = 0
-    Top = 773
-    Width = 1268
+    Top = 726
+    Width = 1275
     Height = 6
     Cursor = crVSplit
     Align = alBottom
@@ -41,7 +41,7 @@ object frmMain: TfrmMain
   object sPanel1: TsPanel
     Left = 0
     Top = 0
-    Width = 1268
+    Width = 1275
     Height = 41
     Align = alTop
     Caption = 
@@ -55,7 +55,7 @@ object frmMain: TfrmMain
     Left = 5
     Top = 94
     Width = 612
-    Height = 674
+    Height = 627
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -68,7 +68,7 @@ object frmMain: TfrmMain
       Left = 17
       Top = 35
       Width = 578
-      Height = 572
+      Height = 525
       Margins.Left = 15
       Margins.Top = 15
       Margins.Right = 15
@@ -109,7 +109,7 @@ object frmMain: TfrmMain
     object sPanel4: TsPanel
       AlignWithMargins = True
       Left = 17
-      Top = 623
+      Top = 576
       Width = 578
       Height = 48
       Margins.Left = 15
@@ -142,8 +142,8 @@ object frmMain: TfrmMain
     AlignWithMargins = True
     Left = 633
     Top = 94
-    Width = 630
-    Height = 674
+    Width = 637
+    Height = 627
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -155,8 +155,8 @@ object frmMain: TfrmMain
       AlignWithMargins = True
       Left = 17
       Top = 35
-      Width = 596
-      Height = 572
+      Width = 603
+      Height = 525
       Margins.Left = 15
       Margins.Top = 15
       Margins.Right = 15
@@ -179,7 +179,7 @@ object frmMain: TfrmMain
       Columns = <
         item
           Position = 0
-          Width = 295
+          Width = 272
           WideText = 'Name'
         end
         item
@@ -190,7 +190,7 @@ object frmMain: TfrmMain
         end
         item
           Position = 2
-          Width = 160
+          Width = 190
           WideText = 'Date / Time'
         end>
       WideDefaultText = ''
@@ -198,8 +198,8 @@ object frmMain: TfrmMain
     object sPanel5: TsPanel
       AlignWithMargins = True
       Left = 17
-      Top = 623
-      Width = 596
+      Top = 576
+      Width = 603
       Height = 48
       Margins.Left = 15
       Margins.Top = 1
@@ -208,7 +208,7 @@ object frmMain: TfrmMain
       Align = alBottom
       TabOrder = 1
       DesignSize = (
-        596
+        603
         48)
       object sLabel5: TsLabel
         Left = 98
@@ -223,7 +223,7 @@ object frmMain: TfrmMain
       object txtFolder: TsEdit
         Left = 152
         Top = 12
-        Width = 425
+        Width = 432
         Height = 26
         Anchors = [akLeft, akTop, akRight]
         Color = 4804169
@@ -252,7 +252,7 @@ object frmMain: TfrmMain
   object sPanel2: TsPanel
     Left = 0
     Top = 41
-    Width = 1268
+    Width = 1275
     Height = 48
     Align = alTop
     TabOrder = 3
@@ -298,16 +298,25 @@ object frmMain: TfrmMain
   end
   object sPanel3: TsPanel
     Left = 0
-    Top = 779
-    Width = 1268
-    Height = 100
+    Top = 732
+    Width = 1275
+    Height = 147
     Align = alBottom
     TabOrder = 4
+    object sSplitter3: TsSplitter
+      Left = 930
+      Top = 1
+      Height = 145
+      Align = alRight
+      ShowGrip = True
+      ExplicitLeft = 942
+      ExplicitTop = -3
+    end
     object memStatus: TsMemo
       Left = 1
       Top = 1
-      Width = 1266
-      Height = 98
+      Width = 929
+      Height = 145
       Align = alClient
       Color = 4804169
       Font.Charset = ANSI_CHARSET
@@ -321,6 +330,58 @@ object frmMain: TfrmMain
       ScrollBars = ssBoth
       TabOrder = 0
       Text = 'Not connected'#13#10
+    end
+    object sPanel6: TsPanel
+      Left = 936
+      Top = 1
+      Width = 338
+      Height = 145
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 1
+      object sLabel1: TsLabel
+        AlignWithMargins = True
+        Left = 5
+        Top = 5
+        Width = 328
+        Height = 18
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alTop
+        Caption = 'Progress'
+        ExplicitWidth = 56
+      end
+      object lblUploadProgress: TsLabel
+        AlignWithMargins = True
+        Left = 10
+        Top = 107
+        Width = 318
+        Height = 18
+        Margins.Left = 10
+        Margins.Top = 5
+        Margins.Right = 10
+        Margins.Bottom = 20
+        Align = alBottom
+        Alignment = taCenter
+        ExplicitWidth = 5
+      end
+      object sProgressBar1: TsProgressBar
+        AlignWithMargins = True
+        Left = 5
+        Top = 33
+        Width = 328
+        Height = 64
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Smooth = True
+        MarqueeInterval = 1
+        TabOrder = 0
+      end
     end
   end
   object sSkinManager1: TsSkinManager

@@ -4,6 +4,9 @@ object dm: Tdm
   Height = 508
   Width = 721
   object ftp: TIdFTP
+    OnWork = ftpWork
+    OnWorkBegin = ftpWorkBegin
+    OnWorkEnd = ftpWorkEnd
     IPVersion = Id_IPv4
     Passive = True
     ListenTimeout = 20000

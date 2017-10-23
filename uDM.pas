@@ -35,12 +35,16 @@ type
     procedure actSettingsExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
+    procedure ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
+    procedure ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
+    procedure ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
   private
     FIniFile : TIniFile;
     FHost: string;
     FUsername: string;
     FPassword: string;
     FPort: integer;
+    FCurrentFileSize: integer;
   public
     property Host: string read FHost write FHost;
     property Username: string read FUsername write FUsername;
@@ -48,6 +52,7 @@ type
     property Port: integer read FPort write FPort;
     procedure WriteIniFile;
     function FormatByteSize(const bytes: Longint): string;
+    property CurrentFileSize: integer read FCurrentFileSize write FCurrentFileSize;
   end;
 
 var
@@ -129,6 +134,31 @@ begin
 //      else
 //        //result := FormatFloat('#.## bytes', bytes);
         result := FormatFloat('#,##0', bytes);
+end;
+
+procedure Tdm.ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
+begin
+  if frmMain.sProgressBar1.Max > 0 then
+  begin
+    frmMain.sProgressBar1.Position := AWorkCount;
+    frmMain.lblUploadProgress.Caption := IntToStr((frmMain.sProgressBar1.Position * 100) div frmMain.sProgressBar1.Max) + '%';
+  end else
+    frmMain.lblUploadProgress.Caption := IntToStr(AWorkCount) + ' bytes';
+  frmMain.Update;
+end;
+
+procedure Tdm.ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
+begin
+  if AWorkMode = wmWrite then
+    frmMain.sProgressBar1.Max := AWorkCountMax
+  else;
+    frmMain.sProgressBar1.Max := FCurrentFileSize;
+  frmMain.sProgressBar1.Position := 0;
+end;
+
+procedure Tdm.ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
+begin
+  frmMain.sProgressBar1.Position := 0;
 end;
 
 end.
