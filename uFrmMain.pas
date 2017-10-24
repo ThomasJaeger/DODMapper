@@ -234,7 +234,6 @@ begin
     folder := FCurrentNode.Folder;
     if folder[length(folder)]<>'/' then
       folder := folder + '/';
-    ToStream := TMemoryStream.Create;
     try
       for i := 0 to FMapFiles.Count-1 do
       begin
@@ -271,9 +270,14 @@ begin
               Log('Skipping '+fileName);
             end else
             begin
-              zip.ExtractToStream(Item.FileName, ToStream);
-              ToStream.Position := 0;
-              UpdateNode(folder, Item, cleanFileName, ToStream, zipFileName);
+              try
+                ToStream := TMemoryStream.Create;
+                zip.ExtractToStream(Item.FileName, ToStream);
+                ToStream.Position := 0;
+                UpdateNode(folder, Item, cleanFileName, ToStream, zipFileName);
+              finally
+                ToStream.Free;
+              end;
             end;
           end;
         end;
@@ -281,7 +285,6 @@ begin
       Log('Done!');
       UpdateUI;
     finally
-      ToStream.Free;
       Screen.Cursor := crArrow;
     end;
   end;
