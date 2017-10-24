@@ -21,14 +21,14 @@ object frmMain: TfrmMain
   object sSplitter1: TsSplitter
     Left = 622
     Top = 89
-    Height = 637
+    Height = 598
     ShowGrip = True
     ExplicitLeft = 475
     ExplicitHeight = 530
   end
   object sSplitter2: TsSplitter
     Left = 0
-    Top = 726
+    Top = 687
     Width = 1275
     Height = 6
     Cursor = crVSplit
@@ -55,7 +55,7 @@ object frmMain: TfrmMain
     Left = 5
     Top = 94
     Width = 612
-    Height = 627
+    Height = 588
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -68,7 +68,7 @@ object frmMain: TfrmMain
       Left = 17
       Top = 35
       Width = 578
-      Height = 525
+      Height = 486
       Margins.Left = 15
       Margins.Top = 15
       Margins.Right = 15
@@ -109,7 +109,7 @@ object frmMain: TfrmMain
     object sPanel4: TsPanel
       AlignWithMargins = True
       Left = 17
-      Top = 576
+      Top = 537
       Width = 578
       Height = 48
       Margins.Left = 15
@@ -143,7 +143,7 @@ object frmMain: TfrmMain
     Left = 633
     Top = 94
     Width = 637
-    Height = 627
+    Height = 588
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -156,7 +156,7 @@ object frmMain: TfrmMain
       Left = 17
       Top = 35
       Width = 603
-      Height = 525
+      Height = 486
       Margins.Left = 15
       Margins.Top = 15
       Margins.Right = 15
@@ -198,7 +198,7 @@ object frmMain: TfrmMain
     object sPanel5: TsPanel
       AlignWithMargins = True
       Left = 17
-      Top = 576
+      Top = 537
       Width = 603
       Height = 48
       Margins.Left = 15
@@ -298,13 +298,13 @@ object frmMain: TfrmMain
   end
   object sPanel3: TsPanel
     Left = 0
-    Top = 732
+    Top = 693
     Width = 1275
     Height = 147
     Align = alBottom
     TabOrder = 4
     object sSplitter3: TsSplitter
-      Left = 930
+      Left = 1268
       Top = 1
       Height = 145
       Align = alRight
@@ -315,7 +315,7 @@ object frmMain: TfrmMain
     object memStatus: TsMemo
       Left = 1
       Top = 1
-      Width = 929
+      Width = 1267
       Height = 145
       Align = alClient
       Color = 4804169
@@ -331,57 +331,41 @@ object frmMain: TfrmMain
       TabOrder = 0
       Text = 'Not connected'#13#10
     end
-    object sPanel6: TsPanel
-      Left = 936
-      Top = 1
-      Width = 338
-      Height = 145
-      Align = alRight
-      BevelOuter = bvNone
-      TabOrder = 1
-      object sLabel1: TsLabel
-        AlignWithMargins = True
-        Left = 5
-        Top = 5
-        Width = 328
-        Height = 18
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
-        Align = alTop
-        Caption = 'Progress'
-        ExplicitWidth = 56
-      end
-      object lblUploadProgress: TsLabel
-        AlignWithMargins = True
-        Left = 10
-        Top = 107
-        Width = 318
-        Height = 18
-        Margins.Left = 10
-        Margins.Top = 5
-        Margins.Right = 10
-        Margins.Bottom = 20
-        Align = alBottom
-        Alignment = taCenter
-        ExplicitWidth = 5
-      end
-      object sProgressBar1: TsProgressBar
-        AlignWithMargins = True
-        Left = 5
-        Top = 33
-        Width = 328
-        Height = 64
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
-        Align = alClient
-        Smooth = True
-        MarqueeInterval = 1
-        TabOrder = 0
-      end
+  end
+  object sPanel6: TsPanel
+    Left = 0
+    Top = 840
+    Width = 1275
+    Height = 39
+    Align = alBottom
+    TabOrder = 5
+    object lblUploadProgress: TsLabel
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 1267
+      Height = 31
+      Align = alClient
+      Alignment = taCenter
+      ParentFont = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clSilver
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ExplicitWidth = 5
+      ExplicitHeight = 18
+    end
+    object sProgressBar1: TsProgressBar
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 1267
+      Height = 31
+      Align = alClient
+      Smooth = True
+      MarqueeInterval = 1
+      TabOrder = 0
     end
   end
   object sSkinManager1: TsSkinManager

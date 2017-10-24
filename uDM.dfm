@@ -12,7 +12,7 @@ object dm: Tdm
     ListenTimeout = 20000
     NATKeepAlive.UseKeepAlive = True
     NATKeepAlive.IdleTimeMS = 20000
-    NATKeepAlive.IntervalMS = 5000
+    NATKeepAlive.IntervalMS = 20000
     ProxySettings.ProxyType = fpcmNone
     ProxySettings.Port = 0
     Left = 184

@@ -46,9 +46,8 @@ type
     btnBack: TsButton;
     sSplitter3: TsSplitter;
     sPanel6: TsPanel;
-    sLabel1: TsLabel;
-    sProgressBar1: TsProgressBar;
     lblUploadProgress: TsLabel;
+    sProgressBar1: TsProgressBar;
     procedure btnAddMapFilesClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lstMAPFilesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -86,7 +85,7 @@ type
     function ChangeFolder(node: TFTPItem; folder: string): TFTPItem;
     function GetRootNode(node: TFTPItem): TFTPItem;
     function SearchTree(node: TFTPItem; fn: string): TFTPItem;
-    procedure UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream);
+    procedure UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream; zipFileName: string);
     function CleanItem(zipFileName: string; itemFileName: string): string;
     function GetDODFolder: TFTPItem;
     procedure CreateFolders(fullpath: string; currentFolder: string);
@@ -213,10 +212,10 @@ var
   i: Integer;
   ToStream : TMemoryStream;
   Item : TAbArchiveItem;
-  x: Integer;
+  x,zipPos: Integer;
   folder: string;
   cleanFileName: string;
-  fileName: string;
+  fileName,zipFileName: string;
 begin
   if FCurrentNode = nil then exit;
 
@@ -246,14 +245,27 @@ begin
         begin
           Item := zip.Items[x];
           cleanFileName := CleanItem(FMapFiles[i].Filename, Item.FileName);
-          if Item.FileName[length(Item.FileName)] = '/' then
-          begin
-            // It's a folder, remove '/' at end
-            fileName := folder+copy(Item.FileName,1,length(Item.FileName)-1)
-          end else
-            fileName := folder+Item.FileName;
           if length(cleanFileName)>0 then
           begin
+            zipFileName := uppercase(ChangeFileExt(ExtractFileName(FMapFiles[i].Filename),''));
+            zipPos := pos(zipFileName+'/',uppercase(Item.FileName));
+            if Item.FileName[length(Item.FileName)] = '/' then
+            begin
+              // It's a folder, remove '/' at end
+              // Also, remove the zip filename from the item filename
+              if zipPos > 0 then
+                fileName := folder+copy(Item.FileName,length(zipFileName+'/')+1)
+              else
+                fileName := folder+copy(Item.FileName,1,length(Item.FileName)-1);
+            end else
+            begin
+              if zipPos > 0 then
+                fileName := folder+copy(Item.FileName,length(zipFileName+'/')+1)
+              else
+                fileName := folder+Item.FileName;
+            end;
+            if fileName[length(fileName)] = '/' then
+              fileName := copy(fileName,1,length(fileName)-1);
             if DoesFTpFileExist(fileName) then
             begin
               Log('Skipping '+fileName);
@@ -261,7 +273,7 @@ begin
             begin
               zip.ExtractToStream(Item.FileName, ToStream);
               ToStream.Position := 0;
-              UpdateNode(folder, Item, cleanFileName, ToStream);
+              UpdateNode(folder, Item, cleanFileName, ToStream, zipFileName);
             end;
           end;
         end;
@@ -296,6 +308,7 @@ begin
   lstMAPFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetGlobalColor;
   lstFtpFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetGlobalColor;
   //lstFtpFiles.Colors.UnfocusedSelectionColor := frmMain.sSkinManager1.GetHighLightColor(true);
+  //lblUploadProgress.Font.Color := frmMain.sSkinManager1.GetGlobalColor;
 
   FLogFileName := ExtractFilePath(Application.ExeName) + 'DODMapperLog.txt';
   AssignFile(FLogFile, FLogFileName);
@@ -478,9 +491,9 @@ end;
 
 procedure TfrmMain.ConnectoToFTPServer;
 begin
-  try
-    with dm do
-    begin
+  with dm do
+  begin
+    try
       if not ftp.Connected then
       begin
         ftp.Host := dm.Host;
@@ -494,9 +507,14 @@ begin
           UpdateUI;
         end;
       end;
+    except
+      try
+        ftp.Disconnect(False);
+      except
+      end;
+      if ftp.IOHandler <> nil then ftp.IOHandler.InputBuffer.Clear;
+      Log('Connectivity to the server has been lost.');
     end;
-  except
-
   end;
 end;
 
@@ -677,13 +695,13 @@ begin
   end;
 end;
 
-procedure TfrmMain.UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream);
+procedure TfrmMain.UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream; zipFileName: string);
 var
   ftpItem,existingFtpItem: TFTPItem;
   fullPath: string;
   delimiterPos: integer;
   parent: TFTPItem;
-  i: Integer;
+  i,zipPos: Integer;
 begin
   if FDOD = nil then exit;
 
@@ -691,7 +709,12 @@ begin
 
   // First, check if there are any folders in the zip item
   //fullPath := folder + item.FileName;
-  fullPath := item.FileName;
+  zipPos := pos(zipFileName+'/',uppercase(Item.FileName));
+  if zipPos > 0 then
+    fullPath := copy(Item.FileName,length(zipFileName+'/')+1)
+  else
+    fullPath := item.FileName;
+
   delimiterPos := pos('/', fullPath);
   if delimiterPos > 0 then
   begin
