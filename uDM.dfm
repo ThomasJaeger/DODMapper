@@ -9,6 +9,7 @@ object dm: Tdm
     OnWorkEnd = ftpWorkEnd
     IPVersion = Id_IPv4
     Passive = True
+    TransferType = ftBinary
     ListenTimeout = 20000
     NATKeepAlive.UseKeepAlive = True
     NATKeepAlive.IdleTimeMS = 20000
