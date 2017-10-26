@@ -85,7 +85,8 @@ type
     function ChangeFolder(node: TFTPItem; folder: string): TFTPItem;
     function GetRootNode(node: TFTPItem): TFTPItem;
     function SearchTree(node: TFTPItem; fn: string): TFTPItem;
-    procedure UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream; zipFileName: string);
+    procedure UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream;
+      zipFileName: string; fullPath: string);
     function CleanItem(zipFileName: string; itemFileName: string): string;
     function GetDODFolder: TFTPItem;
     procedure CreateFolders(fullpath: string; currentFolder: string);
@@ -215,7 +216,8 @@ var
   x,zipPos: Integer;
   folder: string;
   cleanFileName: string;
-  fileName,zipFileName: string;
+  fileName,zipFileName,leftDir: string;
+  foundZipFileNameInFolder: boolean;
 begin
   if FCurrentNode = nil then exit;
 
@@ -240,26 +242,34 @@ begin
         Log('***********'+StringOfChar('*',length(FMapFiles[i].Filename)));
         Log('Processing '+FMapFiles[i].Filename);
         zip.OpenArchive(FMapFiles[i].Filename);
+        zipFileName := uppercase(ChangeFileExt(ExtractFileName(FMapFiles[i].Filename),''));
         for x := 0 to zip.Count-1 do
         begin
           Item := zip.Items[x];
           cleanFileName := CleanItem(FMapFiles[i].Filename, Item.FileName);
           if length(cleanFileName)>0 then
           begin
-            zipFileName := uppercase(ChangeFileExt(ExtractFileName(FMapFiles[i].Filename),''));
-            zipPos := pos(zipFileName+'/',uppercase(Item.FileName));
+            // 'sound/dod_walmart/alliesscoreshort.wav'
+            leftDir := zipFileName+'/';
+            foundZipFileNameInFolder := false;
+            if leftDir = copy(uppercase(Item.FileName),1,length(leftDir)) then
+            begin
+              foundZipFileNameInFolder := true;
+              leftDir := copy(Item.FileName,length(leftDir)+1);
+            end;
+            //zipPos := pos(leftDir,uppercase(Item.FileName));
             if Item.FileName[length(Item.FileName)] = '/' then
             begin
               // It's a folder, remove '/' at end
               // Also, remove the zip filename from the item filename
-              if zipPos > 0 then
-                fileName := folder+copy(Item.FileName,length(zipFileName+'/')+1)
+              if foundZipFileNameInFolder then
+                fileName := folder+copy(Item.FileName,length(leftDir)+1)
               else
                 fileName := folder+copy(Item.FileName,1,length(Item.FileName)-1);
             end else
             begin
-              if zipPos > 0 then
-                fileName := folder+copy(Item.FileName,length(zipFileName+'/')+1)
+              if foundZipFileNameInFolder then
+                fileName := folder+copy(Item.FileName,length(leftDir)+1)
               else
                 fileName := folder+Item.FileName;
             end;
@@ -274,7 +284,7 @@ begin
                 ToStream := TMemoryStream.Create;
                 zip.ExtractToStream(Item.FileName, ToStream);
                 ToStream.Position := 0;
-                UpdateNode(folder, Item, cleanFileName, ToStream, zipFileName);
+                UpdateNode(folder, Item, cleanFileName, ToStream, zipFileName, fileName);
               finally
                 ToStream.Free;
               end;
@@ -684,7 +694,10 @@ begin
   end;
 
   result := nil;
+  if fn[length(fn)] = '/' then
+    fn := copy(fn, 1, length(fn)-1);
   searchFor := uppercase(fn);
+
   for i := 0 to node.Children.Count-1 do
   begin
     if node.Children[i].FullPathWithFileName = searchFor then
@@ -698,10 +711,11 @@ begin
   end;
 end;
 
-procedure TfrmMain.UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream; zipFileName: string);
+procedure TfrmMain.UpdateNode(folder: string; item: TAbArchiveItem; cleanFileName: string; ToStream: TMemoryStream;
+  zipFileName: string; fullPath: string);
 var
   ftpItem,existingFtpItem: TFTPItem;
-  fullPath: string;
+//  fullPath: string;
   delimiterPos: integer;
   parent: TFTPItem;
   i,zipPos: Integer;
@@ -709,14 +723,12 @@ begin
   if FDOD = nil then exit;
 
   // 'sprites/obj_icons/dod_tiger2_b2/icon_obj_custom1_allies.spr'
-
-  // First, check if there are any folders in the zip item
-  //fullPath := folder + item.FileName;
-  zipPos := pos(zipFileName+'/',uppercase(Item.FileName));
-  if zipPos > 0 then
-    fullPath := copy(Item.FileName,length(zipFileName+'/')+1)
-  else
-    fullPath := item.FileName;
+  // 'sound/dod_walmart/alliesscoreshort.wav'
+//  zipPos := pos(zipFileName+'/',uppercase(Item.FileName));
+//  if zipPos > 0 then
+//    fullPath := copy(Item.FileName,length(zipFileName+'/')+1)
+//  else
+//    fullPath := item.FileName;
 
   delimiterPos := pos('/', fullPath);
   if delimiterPos > 0 then
@@ -734,7 +746,8 @@ begin
 
     // Get parent for the file/folder
     FFoundNode := nil;
-    parent := SearchTree(FDOD,FDOD.Folder + '/' + fullPath);
+    //parent := SearchTree(FDOD,FDOD.Folder + '/' + fullPath);
+    parent := SearchTree(FDOD,fullPath);
     if parent <> nil then
     begin
       // Update our local tree with a new FTPItem
@@ -793,6 +806,9 @@ begin
     // Get first folder from full path
     if length(fullpath) > 0 then
     begin
+      leftDir := uppercase(copy(fullpath,1,5));
+      if leftDir = '/DOD/' then
+        fullpath := copy(fullpath,6);
       delimiterPos := pos('/', fullpath);
       if delimiterPos > 0 then
       begin
@@ -824,11 +840,16 @@ begin
     // Keep going with the fullpath
     leftDir := copy(fullPath,1,pos(currentFolder,fullPath)+length(currentFolder));
     path := copy(fullPath,pos(currentFolder,fullPath)+length(currentFolder)+1);
-    delimiterPos := pos('/', path);
-    if delimiterPos > 0 then
+    //delimiterPos := pos('/', path);
+    //if delimiterPos > 0 then
+    if path <> '' then
     begin
       // We have at least one folder in there
-      dir := copy(path,1,delimiterPos-1);
+      delimiterPos := pos('/', path);
+      if delimiterPos > 0 then
+        dir := copy(path,1,delimiterPos-1)
+      else
+        dir := path;
       FFoundNode := nil;
       path := FDOD.Folder + '/' + leftDir + dir;
       existingFtpItem := SearchTree(FDOD,path);
@@ -843,14 +864,21 @@ begin
         parent := SearchTree(FDOD,FDOD.Folder + '/' + leftDir);
 
         // Update our local tree with a new FTPItem
-        ftpItem := TFTPItem.Create(parent);
-        ftpItem.FullPathWithFileName := uppercase(path);
-        ftpItem.Folder := path;
-        ftpItem.Name := dir;
-        ftpItem.Size := 0;
-        ftpItem.Dir := true;
-        ftpItem.ModifiedDate := datetimetostr(now);
-        parent.Children.Add(ftpItem);
+        // parent should be not nil, of it is nil, it's an error
+        if parent <> nil then
+        begin
+          ftpItem := TFTPItem.Create(parent);
+          ftpItem.FullPathWithFileName := uppercase(path);
+          ftpItem.Folder := path;
+          ftpItem.Name := dir;
+          ftpItem.Size := 0;
+          ftpItem.Dir := true;
+          ftpItem.ModifiedDate := datetimetostr(now);
+          parent.Children.Add(ftpItem);
+        end else
+        begin
+          Log('ERROR: Can not find parent folder ' + FDOD.Folder + '/' + leftDir);
+        end;
       end;
       CreateFolders(fullpath, dir);
     end else
@@ -870,7 +898,7 @@ begin
   result := itemFileName;
   needle := uppercase(ChangeFileExt(ExtractFileName(zipFileName),'')) + '/';
   i := AnsiPos(needle, uppercase(itemFileName));
-  if i > 0 then
+  if i = 1 then
     result := copy(itemFileName, i+length(needle));
   if result <> '' then
     if result[length(result)] = '/' then
