@@ -168,6 +168,18 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnClick = btnAddMapFilesClick
     end
+    object btnUploadAgain: TsButton
+      Left = 624
+      Top = 9
+      Width = 409
+      Height = 30
+      Hint = 'Upload MAP files to FTP server'
+      Caption = 'Step 3: &Upload again (in case of failure)'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      OnClick = btnUploadAgainClick
+    end
   end
   object sPanel3: TsPanel
     Left = 0

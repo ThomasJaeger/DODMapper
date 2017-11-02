@@ -50,6 +50,7 @@ type
     ftp: TFtpClient;
     InfoLabel: TsLabel;
     UnZipper: TAbUnZipper;
+    btnUploadAgain: TsButton;
     procedure btnAddMapFilesClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lstMAPFilesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
@@ -73,6 +74,7 @@ type
     procedure ftpRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
     procedure btnRootClick(Sender: TObject);
     procedure UnZipperArchiveProgress(Sender: TObject; Progress: Byte; var Abort: Boolean);
+    procedure btnUploadAgainClick(Sender: TObject);
   private
     FMapFiles: TList<TMapFile>;
     FCurrentNode: TFTPItem;
@@ -124,6 +126,7 @@ type
     procedure MoveDirectories(ASourcePath, AFileSpec, ATargetPath: string);
     function MoveDir(const fromDir, toDir: string): Boolean;
     function DeleteDir(const Dir: string): Boolean;
+    procedure UploadMaps;
   public
     { Public declarations }
   end;
@@ -257,6 +260,11 @@ procedure TfrmMain.btnRootClick(Sender: TObject);
 begin
   FCurrentNode := GetFTPNodes('/');
   UpdateUI;
+end;
+
+procedure TfrmMain.btnUploadAgainClick(Sender: TObject);
+begin
+  UploadMaps;
 end;
 
 procedure TfrmMain.btnUploadClick(Sender: TObject);
@@ -1738,20 +1746,12 @@ end;
 procedure TFrmMain.Upload;
 var
   i: Integer;
-//  threadnr: integer;
   taskres: TTaskResult;
   zipFileName: string;
   baseDirectory: string;
 begin
-//  try
-//    TDirectory.Delete(ExtractFilePath(Application.ExeName) + 'temp\', true);
-//  except
-//  end;
-//  ForceDirectories(FTempDirectory);
-
 //  if MessageDlg('Upload ' + inttostr(FMapFiles.Count) + ' map files?', mtCustom,[mbYes,mbCancel], 0) = mrCancel then
 //    exit;
-
   Screen.Cursor := crHourGlass;
 
   frmMain.sProgressBar1.Position := 0;
@@ -1787,117 +1787,7 @@ begin
     end;
   end;
 
-  Log('Moving files from '+FTempDirectory+'*.bsp'+' to '+FTempDirectory+'maps');
-  MoveFiles(FTempDirectory,'*.bsp',FTempDirectory+'maps', true);
-
-  try
-    MagFTPClient := TMagFtp.Create(self);
-    try
-      if SetFTPGen then exit;
-      try
-        Log('Uploading...');
-        with MagFTPClient do
-        begin
-          BulkMode := BulkModeUpload ;
-          SrcDir := FTempDirectory;
-          TarDir := '/dod/';
-          CopyType := FCTypeAllDir;
-          DelDone := false;
-          DelOldTar := false;
-          SubDirs := true;
-          EmptyDirs := true;
-          IgnorePaths := '';
-          SrcFName := '*.*';
-          Mask := false;
-          Prev := false;
-          MaskLocDir := false;
-          MaskRemDir := false;
-          Repl := FCReplNever;
-          Safe := true;
-          IgnoreFileExt := 'tmp';
-          TimeStamp := false;
-          taskres := FtpUpload(false);
-          Log('Task Result: ' + GetTaskResName (taskres));
-          Log(ReqResponse);
-        end;
-      except
-        Log('FTP Error - ' + GetExceptMess (ExceptObject));
-      end ;
-    finally
-      FreeAndNil(MagFTPClient);
-      Log('FTP Completed');
-    end ;
-
-    Log('Done!');
-    UpdateUI;
-  finally
-    frmMain.sProgressBar1.Position := 0;
-    Screen.Cursor := crArrow;
-  end;
-
-//      AbortFlag := false;
-//      MagFTPClient := TMagFtp.Create(self);
-//      try
-//        if SetFTPGen then exit;
-//        try
-//          with MagFTPClient do
-//          begin
-//            TarDir := '/dod/';
-//            BulkMode := BulkModeUpload ;
-//            //DelFile := false;
-//            taskres := FtpLogon ;
-//            if taskres = TaskResOKNew then
-//            begin
-//              taskres := FtpUpOneFile(Ftp1UpFile.Text, '/dod/', Ftp1SrcName.Text, FCReplNever);
-//            end ;
-//            Log('Task Result: ' + GetTaskResName (taskres));
-//            Log(ReqResponse);
-//          end ;
-//        except
-//          Log('FTP Error - ' + GetExceptMess (ExceptObject));
-//        end ;
-//      finally
-//        MagFTPClient.FtpLogoff ;
-//        FreeAndNil (MagFTPClient) ;
-//        Log('FTP Completed');
-//      end;
-
-
-//    AbortFlag := false ;
-//    try
-//      threadnr := SetFTPThreadGen ;
-//      if threadnr < 0 then exit ;
-//      with MagFtpThreads[threadnr]do
-//      begin
-//        BulkMode := BulkModeUpload ;
-//        SrcDir := FTempDirectory;
-//        TarDir := '/dod/';
-//        CopyType := FCTypeAllDir;
-//        DelDone := false;
-//        DelOldTar := false;
-//        SubDirs := true;
-//        EmptyDirs := true;
-////        IgnorePaths := FtpIgnorePath.Text;
-//        SrcFName := '*.*';
-//        Mask := false;     // true, allow date/time masked characters and directories in SrcFName
-//        Prev := false;     // true, use yesterday's date for Mask
-//        MaskLocDir := false; // 8 Apr 2009 - true use masked directories from SrcFName
-//        MaskRemDir := false; // 8 Apr 2009 - true use masked directories from SrcFName
-//        Repl := FCReplNever;
-//        Safe := true;
-//        IgnoreFileExt := 'tmp';
-//        TimeStamp := false; // update local file time stamp to match remote
-//        FtpThreadOpt := ftpthdUpFiles;
-//    {$if RTLVersion >= 21}
-//        Start;
-//    {$else}
-//        Resume;   // thread starts
-//      {$ifend}
-//        AddLogText('Created FTP: ' + ID);
-//      end ;
-//    except
-//      AddLogText ('FTP Error - ' + GetExceptMess (ExceptObject));
-//    end;
+  UploadMaps;
 end;
 
 procedure TFrmMain.MoveFiles(ASourcePath, AFileSpec, ATargetPath: string; currentFolderOnly: boolean = false);
@@ -1982,6 +1872,59 @@ begin
     fFlags := FOF_NOCONFIRMATION or FOF_ALLOWUNDO;
   end;
   Result := (0 = ShFileOperation(fos));
+end;
+
+procedure TfrmMain.UploadMaps;
+var
+  taskres: TTaskResult;
+begin
+  Screen.Cursor := crHourGlass;
+  frmMain.sProgressBar1.Position := 0;
+
+  try
+    MagFTPClient := TMagFtp.Create(self);
+    try
+      if SetFTPGen then exit;
+      try
+        Log('Uploading...');
+        with MagFTPClient do
+        begin
+          BulkMode := BulkModeUpload ;
+          SrcDir := FTempDirectory;
+          TarDir := '/dod/';
+          CopyType := FCTypeAllDir;
+          DelDone := false;
+          DelOldTar := false;
+          SubDirs := true;
+          EmptyDirs := true;
+          IgnorePaths := '';
+          SrcFName := '*.*';
+          Mask := false;
+          Prev := false;
+          MaskLocDir := false;
+          MaskRemDir := false;
+          Repl := FCReplNever;
+          Safe := true;
+          IgnoreFileExt := 'tmp';
+          TimeStamp := false;
+          taskres := FtpUpload(false);
+          Log('Task Result: ' + GetTaskResName (taskres));
+          Log(ReqResponse);
+        end;
+      except
+        Log('FTP Error - ' + GetExceptMess (ExceptObject));
+      end ;
+    finally
+      FreeAndNil(MagFTPClient);
+      Log('FTP Completed');
+    end ;
+
+    Log('Done!');
+    UpdateUI;
+  finally
+    frmMain.sProgressBar1.Position := 0;
+    Screen.Cursor := crArrow;
+  end;
 end;
 
 end.
