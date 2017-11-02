@@ -3,9 +3,8 @@ unit uDM;
 interface
 
 uses
-  System.SysUtils, System.Classes, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdExplicitTLSClientServerBase, IdFTP, System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan,
-  Vcl.ImgList, Vcl.Controls, inifiles, Vcl.Forms;
+  System.SysUtils, System.Classes, System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan,
+  Vcl.ImgList, Vcl.Controls, inifiles, Vcl.Forms, OverbyteIcsWndControl, OverbyteIcsFtpCli;
 
 type
   PFTPData = ^TFTPData;
@@ -15,6 +14,7 @@ type
     Level: integer;
     Dir: boolean;
     ModifiedDate: string;
+    FullPath: string;
   end;
 
   PMapFile = ^TMapFile;
@@ -25,7 +25,6 @@ type
   end;
 
   Tdm = class(TDataModule)
-    ftp: TIdFTP;
     ActionManager1: TActionManager;
     actExit: TAction;
     actSettings: TAction;
@@ -35,9 +34,9 @@ type
     procedure actSettingsExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
-    procedure ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
-    procedure ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
-    procedure ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
+//    procedure ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
+//    procedure ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
+//    procedure ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
   private
     FIniFile : TIniFile;
     FHost: string;
@@ -136,29 +135,29 @@ begin
         result := FormatFloat('#,##0', bytes);
 end;
 
-procedure Tdm.ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
-begin
-  if frmMain.sProgressBar1.Max > 0 then
-  begin
-    frmMain.sProgressBar1.Position := AWorkCount;
-    frmMain.lblUploadProgress.Caption := IntToStr((frmMain.sProgressBar1.Position * 100) div frmMain.sProgressBar1.Max) + '%';
-  end else
-    frmMain.lblUploadProgress.Caption := IntToStr(AWorkCount) + ' bytes';
-  frmMain.Update;
-end;
-
-procedure Tdm.ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
-begin
-  if AWorkMode = wmWrite then
-    frmMain.sProgressBar1.Max := AWorkCountMax
-  else;
-    frmMain.sProgressBar1.Max := FCurrentFileSize;
-  frmMain.sProgressBar1.Position := 0;
-end;
-
-procedure Tdm.ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
-begin
-  frmMain.sProgressBar1.Position := 0;
-end;
+//procedure Tdm.ftpWork(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);
+//begin
+//  if frmMain.sProgressBar1.Max > 0 then
+//  begin
+//    frmMain.sProgressBar1.Position := AWorkCount;
+//    frmMain.lblUploadProgress.Caption := IntToStr((frmMain.sProgressBar1.Position * 100) div frmMain.sProgressBar1.Max) + '%';
+//  end else
+//    frmMain.lblUploadProgress.Caption := IntToStr(AWorkCount) + ' bytes';
+//  frmMain.Update;
+//end;
+//
+//procedure Tdm.ftpWorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
+//begin
+//  if AWorkMode = wmWrite then
+//    frmMain.sProgressBar1.Max := AWorkCountMax
+//  else;
+//    frmMain.sProgressBar1.Max := FCurrentFileSize;
+//  frmMain.sProgressBar1.Position := 0;
+//end;
+//
+//procedure Tdm.ftpWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
+//begin
+//  frmMain.sProgressBar1.Position := 0;
+//end;
 
 end.

@@ -115,6 +115,14 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uFTPItem.pas"/>
+        <DCCReference Include="uFrmDirectoryForm.pas">
+            <Form>DirectoryForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uFrmBrowse.pas">
+            <Form>frmBrowse</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="README.md"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

@@ -3,22 +3,6 @@ object dm: Tdm
   OnCreate = DataModuleCreate
   Height = 508
   Width = 721
-  object ftp: TIdFTP
-    OnWork = ftpWork
-    OnWorkBegin = ftpWorkBegin
-    OnWorkEnd = ftpWorkEnd
-    IPVersion = Id_IPv4
-    Passive = True
-    TransferType = ftBinary
-    ListenTimeout = 20000
-    NATKeepAlive.UseKeepAlive = True
-    NATKeepAlive.IdleTimeMS = 20000
-    NATKeepAlive.IntervalMS = 20000
-    ProxySettings.ProxyType = fpcmNone
-    ProxySettings.Port = 0
-    Left = 184
-    Top = 61
-  end
   object ActionManager1: TActionManager
     Left = 87
     Top = 61

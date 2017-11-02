@@ -2,27 +2,25 @@ object frmSettings: TfrmSettings
   Left = 0
   Top = 0
   Caption = 'Settings'
-  ClientHeight = 667
-  ClientWidth = 585
+  ClientHeight = 278
+  ClientWidth = 679
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -15
-  Font.Name = 'Tahoma'
+  Font.Name = 'Courier New'
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnClose = FormClose
-  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 18
+  TextHeight = 17
   object sGroupBox1: TsGroupBox
     AlignWithMargins = True
     Left = 10
     Top = 5
-    Width = 565
-    Height = 236
+    Width = 659
+    Height = 204
     Margins.Left = 10
     Margins.Top = 5
     Margins.Right = 10
@@ -31,12 +29,12 @@ object frmSettings: TfrmSettings
     Caption = 'DOD Server FTP Login Information'
     TabOrder = 0
     DesignSize = (
-      565
-      236)
+      659
+      204)
     object sLabel1: TsLabel
-      Left = 48
+      Left = 17
       Top = 35
-      Width = 35
+      Width = 89
       Height = 18
       Alignment = taRightJustify
       AutoSize = False
@@ -46,8 +44,9 @@ object frmSettings: TfrmSettings
     object sLabel2: TsLabel
       Left = 11
       Top = 67
-      Width = 72
+      Width = 95
       Height = 18
+      Alignment = taRightJustify
       AutoSize = False
       Caption = '&Username:'
       FocusControl = txtUsername
@@ -55,7 +54,7 @@ object frmSettings: TfrmSettings
     object sLabel3: TsLabel
       Left = 17
       Top = 99
-      Width = 66
+      Width = 89
       Height = 18
       Alignment = taRightJustify
       AutoSize = False
@@ -65,7 +64,7 @@ object frmSettings: TfrmSettings
     object sLabel4: TsLabel
       Left = 17
       Top = 131
-      Width = 66
+      Width = 89
       Height = 18
       Alignment = taRightJustify
       AutoSize = False
@@ -75,7 +74,7 @@ object frmSettings: TfrmSettings
     object sLabel5: TsLabel
       Left = 17
       Top = 163
-      Width = 66
+      Width = 89
       Height = 18
       Alignment = taRightJustify
       AutoSize = False
@@ -83,9 +82,9 @@ object frmSettings: TfrmSettings
       FocusControl = txtFolder
     end
     object txtHost: TsEdit
-      Left = 89
+      Left = 112
       Top = 32
-      Width = 458
+      Width = 529
       Height = 26
       Anchors = [akLeft, akTop, akRight]
       Color = 4804169
@@ -98,9 +97,9 @@ object frmSettings: TfrmSettings
       TabOrder = 0
     end
     object txtUsername: TsEdit
-      Left = 89
+      Left = 112
       Top = 64
-      Width = 272
+      Width = 249
       Height = 26
       Color = 4804169
       Font.Charset = DEFAULT_CHARSET
@@ -112,9 +111,9 @@ object frmSettings: TfrmSettings
       TabOrder = 1
     end
     object txtPassword: TsEdit
-      Left = 89
+      Left = 112
       Top = 96
-      Width = 272
+      Width = 249
       Height = 26
       Color = 4804169
       Font.Charset = DEFAULT_CHARSET
@@ -126,7 +125,7 @@ object frmSettings: TfrmSettings
       TabOrder = 2
     end
     object txtPort: TsSpinEdit
-      Left = 89
+      Left = 112
       Top = 128
       Width = 96
       Height = 26
@@ -143,20 +142,10 @@ object frmSettings: TfrmSettings
       MinValue = 1
       Value = 21
     end
-    object btnTestConnection: TsButton
-      Left = 89
-      Top = 200
-      Width = 192
-      Height = 25
-      Caption = 'Test Connection'
-      Default = True
-      TabOrder = 5
-      OnClick = btnTestConnectionClick
-    end
     object txtFolder: TsEdit
-      Left = 89
+      Left = 112
       Top = 160
-      Width = 458
+      Width = 529
       Height = 26
       Anchors = [akLeft, akTop, akRight]
       Color = 4804169
@@ -168,22 +157,23 @@ object frmSettings: TfrmSettings
       ParentFont = False
       TabOrder = 4
       Text = '/'
-      OnKeyUp = txtFolderKeyUp
     end
   end
   object sPanel1: TsPanel
     Left = 0
-    Top = 617
-    Width = 585
+    Top = 228
+    Width = 679
     Height = 50
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 617
+    ExplicitWidth = 585
     DesignSize = (
-      585
+      679
       50)
     object btnCancel: TsButton
-      Left = 413
+      Left = 507
       Top = 10
       Width = 75
       Height = 25
@@ -192,9 +182,10 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 0
+      ExplicitLeft = 413
     end
     object btnApply: TsButton
-      Left = 494
+      Left = 588
       Top = 10
       Width = 75
       Height = 25
@@ -203,49 +194,7 @@ object frmSettings: TfrmSettings
       ModalResult = 1
       TabOrder = 1
       OnClick = btnApplyClick
+      ExplicitLeft = 494
     end
-  end
-  object lstFiles: TVirtualStringTree
-    AlignWithMargins = True
-    Left = 10
-    Top = 256
-    Width = 565
-    Height = 351
-    Margins.Left = 10
-    Margins.Top = 5
-    Margins.Right = 10
-    Margins.Bottom = 10
-    Align = alClient
-    EmptyListMessage = '< Not connected >'
-    Header.AutoSizeIndex = 0
-    Header.Height = 30
-    Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowImages, hoVisible, hoAutoSpring]
-    Header.ParentFont = True
-    Images = dm.TreeImages
-    ScrollBarOptions.AlwaysVisible = True
-    ScrollBarOptions.ScrollBars = ssVertical
-    TabOrder = 2
-    TreeOptions.SelectionOptions = [toFullRowSelect]
-    OnGetText = lstFilesGetText
-    OnGetImageIndex = lstFilesGetImageIndex
-    OnNodeDblClick = lstFilesNodeDblClick
-    Columns = <
-      item
-        Position = 0
-        Width = 264
-        WideText = 'Name'
-      end
-      item
-        Alignment = taRightJustify
-        Position = 1
-        Width = 120
-        WideText = 'Size in Bytes'
-      end
-      item
-        Position = 2
-        Width = 160
-        WideText = 'Date / Time'
-      end>
-    WideDefaultText = ''
   end
 end
