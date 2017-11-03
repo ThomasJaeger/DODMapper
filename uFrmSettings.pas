@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, sEdit, sLabel, sGroupBox, sButton, sSpinEdit,
-  uDM, Vcl.ExtCtrls, sPanel, System.Generics.Collections;
+  uDM, Vcl.ExtCtrls, sPanel, System.Generics.Collections, sCheckBox;
 
 type
   TfrmSettings = class(TForm)
@@ -23,6 +23,8 @@ type
     btnApply: TsButton;
     txtFolder: TsEdit;
     sLabel5: TsLabel;
+    sLabel6: TsLabel;
+    chkPassive: TsCheckBox;
     procedure FormShow(Sender: TObject);
     procedure btnApplyClick(Sender: TObject);
     procedure WriteIniFile;
@@ -52,6 +54,7 @@ begin
   txtUsername.Text := dm.Username;
   txtPassword.Text := dm.Password;
   txtPort.Value := dm.Port;
+  chkPassive.Checked := dm.Passive;
 end;
 
 procedure TfrmSettings.WriteIniFile;
@@ -60,6 +63,7 @@ begin
   dm.Username := txtUsername.Text;
   dm.Password := txtPassword.Text;
   dm.Port := txtPort.Value;
+  dm.Passive := chkPassive.Checked;
   dm.WriteIniFile;
 end;
 

@@ -44,11 +44,13 @@ type
     FPassword: string;
     FPort: integer;
     FCurrentFileSize: integer;
+    FPassive: boolean;
   public
     property Host: string read FHost write FHost;
     property Username: string read FUsername write FUsername;
     property Password: string read FPassword write FPassword;
     property Port: integer read FPort write FPort;
+    property Passive: boolean read FPassive write FPassive;
     procedure WriteIniFile;
     function FormatByteSize(const bytes: Longint): string;
     property CurrentFileSize: integer read FCurrentFileSize write FCurrentFileSize;
@@ -93,6 +95,7 @@ begin
     FUsername := FIniFile.ReadString(section,'Username','');
     FPassword := FIniFile.ReadString(section,'Password','');
     FPort := FIniFile.ReadInteger(section,'Port',21);
+    FPassive := FIniFile.ReadBool(section,'Passive',false);
   finally
     FIniFile.Free;
   end;
@@ -110,6 +113,7 @@ begin
     FIniFile.WriteString(section,'Username',FUsername);
     FIniFile.WriteString(section,'Password',FPassword);
     FIniFile.WriteInteger(section,'Port',FPort);
+    FIniFile.WriteBool(section,'Passive',FPassive);
   finally
     FIniFile.Free;
   end;

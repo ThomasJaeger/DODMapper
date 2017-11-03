@@ -1553,7 +1553,7 @@ begin
 //                    SocksPassword := '' ;
 //                end ;
 //            end ;
-            PassiveX := false;  // must be after connection type
+            PassiveX := dm.Passive;  // must be after connection type
        // HostType: FTPTYPE_NONE, FTPTYPE_UNIX, FTPTYPE_DOS, FTPTYPE_MVS, FTPTYPE_AS400, FTPTYPE_MLSD
             HostType := FTPTYPE_NONE ;
        // TXferMode: XferModeBinary, XferModeAscii
@@ -1754,26 +1754,45 @@ begin
 //    exit;
   Screen.Cursor := crHourGlass;
 
-  frmMain.sProgressBar1.Position := 0;
-  with Unzipper do begin
-    ExtractOptions := [eoCreateDirs, eoRestorePath];
-    BaseDirectory := FTempDirectory;
-  end;
-
-  for i := 0 to FMapFiles.Count-1 do
-  begin
-    Log('Unzipping '+FMapFiles[i].Filename);
+  try
     with Unzipper do begin
-      FileName := FMapFiles[i].Filename;
-      ExtractFiles( '*.*' );
+      ExtractOptions := [eoCreateDirs, eoRestorePath];
+      BaseDirectory := FTempDirectory;
     end;
 
-    // Check if folder exists as the same name as the zip file name
-    zipFileName := uppercase(ChangeFileExt(ExtractFileName(FMapFiles[i].Filename),''));
-    if TDirectory.Exists(FTempDirectory+zipFileName) then
+    for i := 0 to FMapFiles.Count-1 do
     begin
-      baseDirectory := FTempDirectory+zipFileName+'\';
+      Log('Unzipping '+FMapFiles[i].Filename);
+      with Unzipper do begin
+        FileName := FMapFiles[i].Filename;
+        ExtractFiles( '*.*' );
+      end;
+    end;
 
+    for i := 0 to FMapFiles.Count-1 do
+    begin
+      // Check if folder exists as the same name as the zip file name
+      zipFileName := uppercase(ChangeFileExt(ExtractFileName(FMapFiles[i].Filename),''));
+      if TDirectory.Exists(FTempDirectory+zipFileName) then
+      begin
+        baseDirectory := FTempDirectory+zipFileName+'\';
+
+        Log('Moving files from '+baseDirectory+' to '+FTempDirectory);
+        MoveFiles(baseDirectory,'*.*',FTempDirectory);
+
+        Log('Moving directories from '+baseDirectory+' to '+FTempDirectory);
+        MoveDirectories(baseDirectory,'*.*',FTempDirectory);
+
+        Log('Deleting directory '+baseDirectory);
+        DeleteDir(baseDirectory);
+
+        frmMain.sProgressBar1.Position := 0;
+      end;
+    end;
+
+    baseDirectory := FTempDirectory+'dod\';
+    if TDirectory.Exists(baseDirectory) then
+    begin
       Log('Moving files from '+baseDirectory+' to '+FTempDirectory);
       MoveFiles(baseDirectory,'*.*',FTempDirectory);
 
@@ -1782,9 +1801,13 @@ begin
 
       Log('Deleting directory '+baseDirectory);
       DeleteDir(baseDirectory);
-
-      frmMain.sProgressBar1.Position := 0;
     end;
+
+    Log('Moving *.bsp files from '+FTempDirectory+' to '+FTempDirectory+'maps');
+    MoveFiles(FTempDirectory,'*.bsp',FTempDirectory+'maps');
+  finally
+    frmMain.sProgressBar1.Position := 0;
+    Screen.Cursor := crArrow;
   end;
 
   UploadMaps;
