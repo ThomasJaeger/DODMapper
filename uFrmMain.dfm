@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Top = 0
   Caption = 'DOD Mapper'
   ClientHeight = 932
-  ClientWidth = 1084
+  ClientWidth = 1276
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object frmMain: TfrmMain
   object sSplitter2: TsSplitter
     Left = 0
     Top = 546
-    Width = 1084
+    Width = 1276
     Height = 6
     Cursor = crVSplit
     Align = alBottom
@@ -33,20 +33,20 @@ object frmMain: TfrmMain
   object sPanel1: TsPanel
     Left = 0
     Top = 0
-    Width = 1084
+    Width = 1276
     Height = 41
     Align = alTop
     Caption = 
       '*** DOD Mapper will NOT overwrite any files or folders that alre' +
       'ady exist in the target FTP folder. ***'
     TabOrder = 0
-    ExplicitWidth = 1275
+    ExplicitWidth = 1084
   end
   object sGroupBox1: TsGroupBox
     AlignWithMargins = True
     Left = 5
     Top = 94
-    Width = 1074
+    Width = 1266
     Height = 447
     Margins.Left = 5
     Margins.Top = 5
@@ -55,13 +55,12 @@ object frmMain: TfrmMain
     Align = alClient
     Caption = 'MAP Files Queue'
     TabOrder = 1
-    ExplicitWidth = 1265
-    ExplicitHeight = 663
+    ExplicitWidth = 1074
     object lstMAPFiles: TVirtualStringTree
       AlignWithMargins = True
       Left = 17
       Top = 34
-      Width = 1040
+      Width = 1232
       Height = 346
       Margins.Left = 15
       Margins.Top = 15
@@ -79,12 +78,11 @@ object frmMain: TfrmMain
       TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toThemeAware, toUseBlendedImages]
       TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect]
       OnGetText = lstMAPFilesGetText
-      ExplicitWidth = 442
-      ExplicitHeight = 493
+      ExplicitWidth = 1040
       Columns = <
         item
           Position = 0
-          Width = 1019
+          Width = 1211
           WideText = 'File Name'
         end
         item
@@ -106,7 +104,7 @@ object frmMain: TfrmMain
       AlignWithMargins = True
       Left = 17
       Top = 396
-      Width = 1040
+      Width = 1232
       Height = 48
       Margins.Left = 15
       Margins.Top = 1
@@ -114,8 +112,7 @@ object frmMain: TfrmMain
       Margins.Bottom = 1
       Align = alBottom
       TabOrder = 1
-      ExplicitTop = 543
-      ExplicitWidth = 442
+      ExplicitWidth = 1040
       object btnClearList: TsButton
         Left = 24
         Top = 8
@@ -139,27 +136,28 @@ object frmMain: TfrmMain
   object sPanel2: TsPanel
     Left = 0
     Top = 41
-    Width = 1084
+    Width = 1276
     Height = 48
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 1275
+    ExplicitWidth = 1084
     object btnUpload: TsButton
-      Left = 320
-      Top = 10
-      Width = 269
+      Left = 576
+      Top = 9
+      Width = 250
       Height = 30
       Hint = 'Upload MAP files to FTP server'
-      Caption = 'Step 2: &Upload Map Files'
+      Caption = 'Step 3: &Upload Map Files'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      Visible = False
       OnClick = btnUploadClick
     end
     object btnAddMapFiles: TsButton
       Left = 22
       Top = 9
-      Width = 269
+      Width = 227
       Height = 30
       Hint = 'Add local MAP files to queue'
       Caption = 'Step 1: &Add Map Files'
@@ -168,29 +166,29 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnClick = btnAddMapFilesClick
     end
-    object btnUploadAgain: TsButton
-      Left = 624
+    object btnUnzip: TsButton
+      Left = 299
       Top = 9
-      Width = 409
+      Width = 240
       Height = 30
       Hint = 'Upload MAP files to FTP server'
-      Caption = 'Step 3: &Upload again (in case of failure)'
+      Caption = 'Step 2: &Unzip Map Files'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
-      OnClick = btnUploadAgainClick
+      OnClick = btnUnzipClick
     end
   end
   object sPanel3: TsPanel
     Left = 0
     Top = 552
-    Width = 1084
+    Width = 1276
     Height = 341
     Align = alBottom
     TabOrder = 3
-    ExplicitWidth = 1275
+    ExplicitWidth = 1084
     object sSplitter4: TsSplitter
-      Left = 1077
+      Left = 1269
       Top = 1
       Height = 339
       Align = alRight
@@ -202,7 +200,7 @@ object frmMain: TfrmMain
     object memStatus: TsMemo
       Left = 1
       Top = 1
-      Width = 1076
+      Width = 1268
       Height = 339
       Align = alClient
       Color = 4804169
@@ -214,21 +212,20 @@ object frmMain: TfrmMain
       ParentFont = False
       ScrollBars = ssBoth
       TabOrder = 0
-      ExplicitWidth = 929
-      ExplicitHeight = 192
+      ExplicitWidth = 1076
     end
   end
   object sPanel6: TsPanel
     Left = 0
     Top = 893
-    Width = 1084
+    Width = 1276
     Height = 39
     Align = alBottom
     TabOrder = 4
-    ExplicitWidth = 1275
+    ExplicitWidth = 1084
     object lblUploadProgress: TsLabel
       AlignWithMargins = True
-      Left = 745
+      Left = 937
       Top = 4
       Width = 335
       Height = 31
@@ -240,7 +237,7 @@ object frmMain: TfrmMain
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
-      ExplicitLeft = 820
+      ExplicitLeft = 745
       ExplicitWidth = 5
       ExplicitHeight = 18
     end
@@ -248,7 +245,7 @@ object frmMain: TfrmMain
       AlignWithMargins = True
       Left = 9
       Top = 9
-      Width = 730
+      Width = 922
       Height = 26
       Margins.Left = 8
       Margins.Top = 8
@@ -260,7 +257,7 @@ object frmMain: TfrmMain
     end
     object sProgressBar1: TsProgressBar
       AlignWithMargins = True
-      Left = 745
+      Left = 937
       Top = 4
       Width = 335
       Height = 31
@@ -269,8 +266,7 @@ object frmMain: TfrmMain
       Smooth = True
       MarqueeInterval = 1
       TabOrder = 0
-      ExplicitLeft = 936
-      ExplicitTop = 5
+      ExplicitLeft = 745
     end
   end
   object sSkinManager1: TsSkinManager
